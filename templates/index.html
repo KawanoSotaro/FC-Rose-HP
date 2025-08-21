@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            /* ヘッダーバー*/
+            .header {
+                background-color: #fff; /* ヘッダーの背景白 */
+                display: flex;  
+                align-items: center;    /* 縦方向中央揃え */
+                justify-content: center; /* 横方向中央揃え */
+                border-bottom: 1px solid #ccc; /* 下線 */
+                padding: 10px 20px; /* 上下の余白 */
+                height: 100px; /* ヘッダーの高さ */
+                position: sticky; /* スクロールしても上部に固定 */
+                top: 0; /* 上部に固定 */
+                z-index: 999;   /* 他の要素の上に表示 */
+            }
+            .header-content {
+                display: flex;
+                align-items: center;      /* アイコンとタイトルの上下揃え */
+                justify-content: center;  /* 必須ではないけど念のため */
+            }
+
+            .header-icon {
+                width: 90px;   
+                height: 90px;
+                object-fit: cover; /* 画像の切り取りを綺麗に */
+                margin-right: 30px; /* アイコンとタイトルの間の余白 */
+            }
+
+            .header-title {
+                font-size: 60px; /* タイトルのフォントサイズ */ 
+                color: hotpink; /* ← ピンク色に */
+                font-family: 'Arial', 'Helvetica', sans-serif; /* ← フォント変更 */  
+                font-weight: bold; /* 太字 */
+                text-align: center; /* 中央揃え */
+            }
+            
+            /* スライドショー */
+            .slideshow-container {
+               max-width: 800px; /* スライドショーの横幅 */
+               height: 600px; /* スライドショーの高さ */
+               margin: 30px auto; /* 中央に配置 */
+               position: relative; /* スライドの位置を相対的に */
+               overflow: hidden; /* はみ出しを隠す */
+               background-color: #fff; /* 背景白 */
+               border-radius: 10px; /* 角丸 */
+               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 軽い影をつける */
+            }
+            
+            .slides-wrapper {
+                display: flex;            /* 横並びにする */
+                transition: transform 0.2s ease-in-out; /* スライドの滑らかな動き */
+                width: 4800px; /* 800px × 6枚 */
+                }
+                
+            .slides-wrapper img {
+                width: 800px;            /* 横幅を固定 */
+                height: 600px;           /* 高さも固定 */
+                object-fit: cover;       /* 画像の切り取りを綺麗に */
+                flex-shrink: 0;          /* 縮まないように */
+                }
+            
+            /* ドットナビゲーション */
+            .dots {
+                text-align: center;
+                margin-top: 15px;
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+                z-index: 10;
+                }
+
+            .dots span {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                margin: 0 5px;
+                background-color: #ccc;
+                border-radius: 50%;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                }
+
+            .dots span.active {
+                background-color: #ff69b4; /* ピンク色で現在位置を示す */
+                }
+                
+                /* カレンダー画像 */
+            .calendar {
+                width: 100%;
+                max-width: 800px;
+                display: block;
+                margin: 30px auto;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                border-radius: 8px; /* 角を少し丸くすると、さらに柔らかい印象に */
+                }
+        </style>
+    </head>
+    <body>
+        <!-- ヘッダーバー -->
+        <div class="header">
+            <div class="header-content">
+                <img src="/static/icon.jpeg" alt="アイコン" class="header-icon">
+                <span class="header-title">FC.Rose</span>
+            </div>
+        </div>
+
+        <!-- スライドショー部分 -->
+        <div class="slideshow-container">
+            <div class="slides-wrapper" id="slidesWrapper">
+                <!-- 最後の画像のクローン -->
+                <img src="/static/rose4.jpeg" alt="clone4">
+                <img src="/static/rose1.jpeg" alt="スライド1">
+                <img src="/static/rose2.jpeg" alt="スライド2">
+                <img src="/static/rose3.JPG" alt="スライド3">
+                <img src="/static/rose4.jpeg" alt="スライド4">
+                <!-- 最初の画像のクローン -->
+                <img src="/static/rose1.jpeg" alt="clone1">
+            </div>
+            <!-- ドットナビゲーション -->
+            <div class="dots" id="dotsContainer"></div>
+        </div>
+    
+        <!-- カレンダー画像 -->
+        <img src="/static/calendar258.png" alt="今月のカレンダー" class="calendar">
+
+        <!-- スクリプト（自動スライド） -->
+        <script>
+        const slidesWrapper = document.getElementById('slidesWrapper');
+        const slideImages = slidesWrapper.querySelectorAll('img');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const slideWidth = 800; // 画像の幅（CSSに合わせる）
+        const totalSlides = 4; // 本物の画像の数（クローンを除く）
+
+        let currentIndex = 1; // スタートは2枚目（1-indexed）→img1
+        let isAnimating = false;
+
+        // ドットを生成
+        for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('span');
+        if (i === 0) dot.classList.add('active');
+        dotsContainer.appendChild(dot);
+        }
+
+        const dots = dotsContainer.querySelectorAll('span');
+
+        function updateDots(index) {
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index % totalSlides].classList.add('active');
+        }
+
+        function moveToSlide(index) {
+        if (isAnimating) return;
+        isAnimating = true;
+        slidesWrapper.style.transition = "transform 0.5s ease-in-out";
+        slidesWrapper.style.transform = `translateX(-${index * slideWidth}px)`;
+        currentIndex = index;
+
+        setTimeout(() => {
+            if (currentIndex === 0) {
+            slidesWrapper.style.transition = "none";
+            slidesWrapper.style.transform = `translateX(-${totalSlides * slideWidth}px)`;
+            currentIndex = totalSlides;
+            } else if (currentIndex === totalSlides + 1) {
+            slidesWrapper.style.transition = "none";
+            slidesWrapper.style.transform = `translateX(-${slideWidth}px)`;
+            currentIndex = 1;
+            }
+            updateDots(currentIndex - 1);
+            isAnimating = false;
+        }, 500);
+        }
+
+        function nextSlide() {
+        moveToSlide(currentIndex + 1);
+        }
+
+        // 最初のスライド表示をセット（ページ読み込み直後に1枚目をしっかり表示）
+        slidesWrapper.style.transform = `translateX(-${slideWidth}px)`;
+        setInterval(nextSlide, 5000);
+        // タッチスワイプ対応
+        let startX = 0;
+        let startY = 0;
+        let isSwiping = false;
+        let isHorizontalSwipe = false;
+
+        slidesWrapper.addEventListener('touchstart', function (e) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isSwiping = true;
+            isHorizontalSwipe = false;
+        }, { passive: true });
+
+        slidesWrapper.addEventListener('touchmove', function (e) {
+            if (!isSwiping) return;
+
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const diffX = currentX - startX;
+            const diffY = currentY - startY;
+
+            // 最初の移動で横スワイプか縦スワイプかを判断
+            if (!isHorizontalSwipe && Math.abs(diffX) > Math.abs(diffY)) {
+                isHorizontalSwipe = true;
+                e.preventDefault(); // 横スワイプのときだけ縦スクロールを止める
+            }
+
+            if (isHorizontalSwipe) {
+                slidesWrapper.style.transition = 'none';
+                slidesWrapper.style.transform = `translateX(-${currentIndex * slideWidth - diffX}px)`;
+            }
+        }, { passive: false });
+
+        slidesWrapper.addEventListener('touchend', function (e) {
+            if (!isSwiping) return;
+
+            const endX = e.changedTouches[0].clientX;
+            const diffX = endX - startX;
+
+            if (isHorizontalSwipe) {
+                // ⭐️ 指を離した後の切り替えスピードを速く
+                slidesWrapper.style.transition = 'transform 0.15s ease-out';
+
+                if (diffX > 50) {
+                    prevSlide();
+                } else if (diffX < -50) {
+                    nextSlide();
+                } else {
+                    showSlide(currentIndex);
+                }
+            }
+
+            isSwiping = false;
+            isHorizontalSwipe = false;
+        });
+        </script>
+
+        <!-- 他のページへのリンク -->
+<p><a href="/profile">メンバー情報を見る（PDF）</a></p>
+<p><a href="/entry">イベント参加フォーム</a></p>
+<p><a href="/about">FC.Roseの紹介を見る</a></p>
+'''
