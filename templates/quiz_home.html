@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ロゼ検定 ホーム</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
+</head>
+<body>
+    <!-- 流れる背景 -->
+    <div class="scrolling-background-container">
+        <div class="scrolling-background row row-top" id="scroll-top">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg1.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg2.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg3.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg4.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg5.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg6.jpeg') }}" alt="">
+        </div>
+        <div class="scrolling-background row row-middle" id="scroll-middle">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg7.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg8.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg9.JPG') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg10.JPG') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg11.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg12.png') }}" alt="">
+        </div>
+        <div class="scrolling-background row row-bottom" id="scroll-bottom">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg13.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg14.JPG') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg15.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg16.jpeg') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg17.JPG') }}" alt="">
+            <img src="{{ url_for('static', filename='images/quiz_background/bg18.png') }}" alt="">
+        </div>
+    </div>
+
+    <!-- タイトル -->
+    <div class="title">
+        <img src="{{ url_for('static', filename='images/rose_kentei_title.png') }}" alt="ロゼ検定！">
+    </div>
+
+    <!-- スタートボタン -->
+<div class="start-button">
+    <a href="{{ url_for('quiz') }}">
+        <img src="{{ url_for('static', filename='images/start_button.png') }}" alt="スタート">
+    </a>
+</div>
+
+<!-- ホームボタン -->
+<div class="home-button">
+    <a href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/home_button.png') }}" alt="ホームに戻る">
+    </a>
+</div>
+
+    <!-- JS読み込み -->
+    <script src="{{ url_for('static', filename='pdfjs/scroll.js') }}"></script>
+</body>
+</html>

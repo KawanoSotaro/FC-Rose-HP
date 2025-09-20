@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, session, url_for
-
+from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory
+import random
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # sessionを使うなら絶対必要！
 
@@ -30,9 +30,7 @@ def logout():
 
 @app.route('/profile')
 def profile():
-    if not session.get('logged_in'):
-        return redirect('/login')
-    return render_template('profile.html')
+    return render_template("profile.html")
 
 @app.route('/entry')
 def entry():
@@ -45,6 +43,25 @@ def about():
     if not session.get('logged_in'):
         return redirect('/login')
     return render_template('about.html')
+
+@app.route('/quiz_home')
+def quiz_home():
+    return render_template('quiz_home.html')
+
+@app.route("/quiz")
+def quiz():
+    questions = [
+        {
+            "id": 1,
+            "question_img": "images/quiz_nakami/q1.png",   # 問題画像
+            "label_img": "images/quiz_nakami/q101.png",  # 「第1問目」画像
+            "choices": ["選択肢A", "選択肢B", "選択肢C", "選択肢D"],
+            "answer": 0,
+            "explanation": "これはテスト用の解説です。"
+        }
+    ]
+    return render_template("quiz.html", questions=questions)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

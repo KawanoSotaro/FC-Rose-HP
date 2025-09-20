@@ -1,0 +1,360 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scrolling-background-container {
+    position: relative;
+    height: 1000px; /* 高さはお好みで */
+    overflow: hidden;
+}
+
+.scrolling-background.row {
+    position: absolute;
+    display: flex;
+    gap: 8px;
+    width: max-content;
+}
+
+.row-top {
+    top: 115px;
+}
+
+.row-middle {
+    top: 395px; /* 高さは画像サイズ＋余白で調整 */
+}
+
+.row-bottom {
+    top: 675px;
+}
+
+.scrolling-background.row img {
+    height: 270px;
+    width: auto;
+    flex: 0 0 auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* タイトル */
+.title {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.title img {
+    width: 1000px;   /* 幅を調整。お好みで変更 */
+    height: auto;   /* 高さは比率を維持 */
+}
+
+/* スタートボタン */
+.start-button {
+    position: absolute;
+    bottom: 22%;          /* スタートボタンの位置 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 600px;         /* 切り取った画像サイズに合わせる（例: 400px） */
+    height: auto;
+}
+
+.start-button img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ホームボタン */
+.home-button {
+    position: absolute;
+    bottom: 10%;           /* 👈 スタートより少し下に配置 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 400px;         /* 切り取った画像サイズに合わせる（例: 300px） */
+    height: auto;
+}
+
+.home-button img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 背景色 */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fffeef; /* 背景色 */
+}
+
+/* 画像の透明度 */
+.scrolling-background.row img {
+  opacity: 0.75;    /* 透明度 0.0〜1.0 で調整、1.0が不透明 */
+}
+
+/* クイズ全体 */
+.quiz-container {
+  text-align: center;
+  margin-top: 30px;
+  font-family: "keifont", "GenShinGothic", sans-serif;
+}
+
+/* 選択肢のレイアウト */
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto; 
+  position: relative;
+  top: 150px;
+  gap: 50px;
+}
+
+.choices button {
+  width: 350px;
+  height: 150px;
+  font-size: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+}
+/* 画像用ボタン */
+.choice-btn.img-choice {
+  height: auto;             /* 高さ自動に変更 */
+  padding: 20px 0;          /* 上下余白 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  /* 中央寄せ */
+  background: none;
+  border: none;
+}
+.choice-btn.img-choice img {
+  width: 350px;            /* 画像サイズ */
+  height: auto;
+  margin: 80px 0;          /* 上下の余白 */
+  margin-top: -90px;  /* 上に上げる */
+}
+
+/* オーバーレイ（正解・不正解） */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: row;
+  padding: 20px;
+  background: none;
+}
+
+#overlay.hidden {
+  display: none;
+}
+
+#overlay img {
+  max-width: 70%;
+  height: auto;
+  object-fit: contain;
+}
+
+#next-btn {
+    margin-top: 20px;
+    font-size: 30px;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+/* 正解/不正解 */
+#explanation {
+  display: flex;
+  justify-content: center; /* 横方向中央 */
+  align-items: center;     /* 縦方向中央（必要に応じて） */
+  font-size: 28px;
+  font-weight: bold;
+  color: #000;
+  text-align: center;      /* テキストも中央揃え */
+  white-space: pre-line;   /* 改行反映 */
+  line-height: 1.6;
+  margin: 20px auto;       /* 上下余白と中央揃え */
+  max-width: 90%;          /* 画面幅に応じて折り返し */
+  z-index: 1000;
+}
+
+/* フォント埋め込み */
+@font-face {
+  font-family: "keifont";
+  src: url("../fonts/keifont.ttf") format("truetype");
+}
+
+/* 選択肢ボタン（JSで生成するボタンにこのクラスを付けます） */
+.choice-btn {
+  width: 350px;
+  height: 150px;
+  font-size: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.choice-btn.img-choice {
+  background: none;       /* 背景を消す */
+  border: none;           /* 枠を消す */
+  padding: 0;             /* 余白も消す */
+}
+
+/* 選択肢内のテキスト */
+.choice-btn span {
+  display: block;
+  font-size: 32px;
+  line-height: 1.0;
+}
+
+/* 第一問などラベル画像 */
+#label-area img {
+  display: block;
+  margin: 0 auto; /* 画面中央寄せ */
+  width: 400px;   /* 横幅を調整（例） */
+  height: auto;   /* 縦横比は維持 */
+  margin-bottom: 20px; /* 下に余白 */
+  position: relative;
+  top: 80px;   /* 上から80px下げる */
+}
+
+/* 正解・不正解のオーバーレイ画像 */
+#overlay img {
+  max-width: 80%;   /* 画面幅の80%まで */
+  height: auto;
+  position: absolute;
+  top: 50%;          /* 画面中央寄せ */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+/* 次へボタン */
+#next-btn {
+  display: none;          /* JSで制御されるので初期は非表示 */
+  position: absolute;     /* 画面中央下に固定 */
+  bottom: 150px;           /* 画面下からの距離 */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  padding: 40px 130px;     /* ボタンの大きさ */
+  font-size: 80px;        /* 文字サイズ */
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  background-color: #20df20;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+  z-index: 1100;          /* オーバーレイより上に表示 */
+}
+
+#next-btn:hover {
+  background-color: #ff3366;
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* クラッカー🎉 */
+#confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* クリックを邪魔しない */
+  overflow: visible;
+  z-index: 9999; /* 画像や説明より前面に */
+}
+
+.confetti {
+  position: absolute; /* relative だと親の位置基準になり、意図通り動かない */
+  width: 10px;
+  height: 10px;
+  background-color: pink; /* 花びら色 */
+  opacity: 0.9;
+  transform: rotate(0deg);
+  animation-duration: 3s; /* 好きな長さに調整 */
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  z-index: 9999;
+}
+
+/* 結果の画面 */
+#final-result img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.result-buttons {
+  display: flex;
+  justify-content: center;  /* 中央寄せ */
+  gap: 100px;               /* ボタン同士の間隔 */
+  margin-top: 40px;         /* 結果画像との距離 */
+}
+
+.result-buttons img {
+  width: 370px !important;  /* ← 強制的に上書き */
+  height: auto !important;
+  cursor: pointer;
+}
+
+
+@keyframes shoot-up-right {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(150px, -400px) rotate(360deg); /* 上に舞う */
+    opacity: 1;
+  }
+  100% {
+    transform: translate(300px, 500px) rotate(720deg);  /* 下に落ちて消える */
+    opacity: 0;
+  }
+}
+
+@keyframes shoot-up-left {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(-150px, -400px) rotate(-360deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-300px, 500px) rotate(-720deg); /* 下に落ちる */
+    opacity: 0;
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ロゼ検定</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
+</head>
+<body>
+  <div class="quiz-container">
+    <!-- 「第〇問目」画像 -->
+    <div id="label-area"></div>
+
+    <!-- 問題画像 -->
+    <div id="question-area"></div>
+
+    <!-- 選択肢エリア -->
+    <div class="choices" id="choices-area"></div>
+
+    <!-- 正誤画像を出すオーバーレイ -->
+    <div id="overlay" class="hidden" aria-hidden="true">
+      <img id="result-img" src="" alt="result">
+      <div id="confetti-container"></div>
+    </div>
+
+    <!-- 次へボタン -->
+    <div style="text-align:center; margin-top:20px;">
+      <button id="next-btn" style="display:none;">次へ</button>
+    </div>
+    <!-- 結果表示用 -->
+    <div id="final-result"></div>
+  </div>
+
+  <!-- quiz.js -->
+  <script src="{{ url_for('static', filename='pdfjs/quiz.js') }}"></script>
+</body>
+</html>

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <!-- 外部CSSを読み込む -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
         <style>
             html, body {
                 margin: 0;
@@ -12,7 +17,7 @@
                 background-color: #fff; /* ヘッダーの背景白 */
                 display: flex;  
                 align-items: center;    /* 縦方向中央揃え */
-                justify-content: center; /* 横方向中央揃え */
+                justify-content: center; /* 中央に配置 */
                 border-bottom: 1px solid #ccc; /* 下線 */
                 padding: 10px 20px; /* 上下の余白 */
                 height: 100px; /* ヘッダーの高さ */
@@ -40,11 +45,81 @@
                 font-weight: bold; /* 太字 */
                 text-align: center; /* 中央揃え */
             }
+            /* ハンバーガーメニューのボタン */
+            .menu-btn {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            width: 80px;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 1001; /* ヘッダーより上 */
+            }
+
+            .menu-btn span {
+                display: block;
+                height: 6px;
+                background: #333;
+                border-radius: 2px;
+                }
+
+            /* メニューの枠 */
+            .menu {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+
+                /* 画像を背景に設定 */
+                background: url('/static/images/menu_bg.png') no-repeat center center;
+                background-size: cover; /* 画面いっぱいに引き伸ばす */
+
+                display: flex;
+                flex-direction: column; /* メニュー縦並び */
+                align-items: center;
+                justify-content: center;
+                align-items: center;     /* 垂直方向中央 */
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.5s ease;
+                z-index: 1000;
+                }
+
+            /* 表示状態 */
+            .menu.active {
+                opacity: 1;
+                pointer-events: auto; /* 表示時はクリック可能 */
+            }
+
+            /* メニューのリンク */
+            .menu a {
+                display: block;
+                margin: 60px 0; /* 行間を広く */
+                font-size: 50px;  
+                color: #fff;
+                text-decoration: none;
+                transition: color 0.3s;
+                }
+        
+            /* 閉じるボタン */
+            .close-btn { 
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                font-size: 80px;
+                color: rgb(0, 0, 0);
+                cursor: pointer;
+            }
             
             /* スライドショー */
             .slideshow-container {
-               max-width: 800px; /* スライドショーの横幅 */
-               height: 600px; /* スライドショーの高さ */
+               max-width: 900px; /* スライドショーの横幅 */
+               height: 675px; /* スライドショーの高さ */
                margin: 30px auto; /* 中央に配置 */
                position: relative; /* スライドの位置を相対的に */
                overflow: hidden; /* はみ出しを隠す */
@@ -56,15 +131,26 @@
             .slides-wrapper {
                 display: flex;            /* 横並びにする */
                 transition: transform 0.2s ease-in-out; /* スライドの滑らかな動き */
-                width: 4800px; /* 800px × 6枚 */
+                width: 5400px; /* 900px × 6枚 */
                 }
                 
             .slides-wrapper img {
-                width: 800px;            /* 横幅を固定 */
-                height: 600px;           /* 高さも固定 */
+                width: 900px;            /* 横幅を固定 */
+                height: 675px;           /* 高さも固定 */
                 object-fit: cover;       /* 画像の切り取りを綺麗に */
                 flex-shrink: 0;          /* 縮まないように */
                 }
+            /* ロゼ検定のボタン */
+            .image-button {
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .image-button img {
+                width: 300px;   /* サイズ調整はお好みで */
+                height: auto;
+                border: none;
+            }
             
             /* ドットナビゲーション */
             .dots {
@@ -96,7 +182,7 @@
                 /* カレンダー画像 */
             .calendar {
                 width: 100%;
-                max-width: 800px;
+                max-width: 900px;
                 display: block;
                 margin: 30px auto;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -108,36 +194,67 @@
         <!-- ヘッダーバー -->
         <div class="header">
             <div class="header-content">
-                <img src="/static/icon.jpeg" alt="アイコン" class="header-icon">
+                <img src="/static/images/icon.jpeg" alt="アイコン" class="header-icon">
                 <span class="header-title">FC.Rose</span>
             </div>
+            <div class="menu-btn" id="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
+
+        <!-- メニュー本体 -->
+        <nav class="menu" id="menu">
+            <div class="close-btn">✕</div>
+            <a href="#">サークルの説明</a>
+            <a href="#">メンバー情報</a>
+            <a href="#">幹部マニュアル</a>
+            <a href="#">サークルへの提案フォーム</a>
+            <a href="#">ロゼ写真集</a>
+            <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">📷 Instagram</a>
+        </nav>
 
         <!-- スライドショー部分 -->
         <div class="slideshow-container">
             <div class="slides-wrapper" id="slidesWrapper">
                 <!-- 最後の画像のクローン -->
-                <img src="/static/rose4.jpeg" alt="clone4">
-                <img src="/static/rose1.jpeg" alt="スライド1">
-                <img src="/static/rose2.jpeg" alt="スライド2">
-                <img src="/static/rose3.JPG" alt="スライド3">
-                <img src="/static/rose4.jpeg" alt="スライド4">
+                <img src="/static/images/rose4.jpeg" alt="clone4">
+                <img src="/static/images/rose1.jpeg" alt="スライド1">
+                <img src="/static/images/rose2.jpeg" alt="スライド2">
+                <img src="/static/images/rose3.JPG" alt="スライド3">
+                <img src="/static/images/rose4.jpeg" alt="スライド4">
                 <!-- 最初の画像のクローン -->
-                <img src="/static/rose1.jpeg" alt="clone1">
+                <img src="/static/images/rose1.jpeg" alt="clone1">
             </div>
             <!-- ドットナビゲーション -->
             <div class="dots" id="dotsContainer"></div>
         </div>
     
         <!-- カレンダー画像 -->
-        <img src="/static/calendar258.png" alt="今月のカレンダー" class="calendar">
-
+        <img src="/static/images/calendar258.png" alt="今月のカレンダー" class="calendar">
+        
+        <!-- ロゼ検定へ遷移 -->
+        <a href="{{ url_for('quiz_home') }}" class="image-button">
+            <img src="{{ url_for('static', filename='images/quiz_home.jpeg') }}" alt="クイズスタート">
+        </a>
+        
         <!-- スクリプト（自動スライド） -->
         <script>
+        // メニューの開閉処理
+        document.getElementById("menu-btn").addEventListener("click", function() {
+        document.getElementById("menu").classList.toggle("active");
+        });
+
+        // 閉じるボタン
+        document.querySelector(".close-btn").addEventListener("click", function() {
+            document.getElementById("menu").classList.remove("active");
+        });
+
         const slidesWrapper = document.getElementById('slidesWrapper');
         const slideImages = slidesWrapper.querySelectorAll('img');
         const dotsContainer = document.getElementById('dotsContainer');
-        const slideWidth = 800; // 画像の幅（CSSに合わせる）
+        const slideWidth = 900; // 画像の幅（CSSに合わせる）
         const totalSlides = 4; // 本物の画像の数（クローンを除く）
 
         let currentIndex = 1; // スタートは2枚目（1-indexed）→img1
@@ -247,4 +364,4 @@
 <p><a href="/profile">メンバー情報を見る（PDF）</a></p>
 <p><a href="/entry">イベント参加フォーム</a></p>
 <p><a href="/about">FC.Roseの紹介を見る</a></p>
-'''
+
