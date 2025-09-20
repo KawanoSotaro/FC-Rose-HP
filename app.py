@@ -5,7 +5,7 @@ app.secret_key = 'your_secret_key'  # sessionを使うなら絶対必要！
 
 PASSWORD = '9981'  # ここに設定したいパスワードを記入
 
-@app.route('/')
+@app.route('/')  # ホーム画面のURLは 「/」
 def index():
     if not session.get('logged_in'):
         return redirect('/login')
@@ -61,6 +61,10 @@ def quiz():
         }
     ]
     return render_template("quiz.html", questions=questions)
+
+@app.route('/photo')  # URLは /photo に設定
+def photo():
+    return render_template('photo.html')
 
 
 if __name__ == '__main__':
