@@ -34,14 +34,10 @@ def profile():
 
 @app.route('/entry')
 def entry():
-    if not session.get('logged_in'):
-        return redirect('/login')
     return render_template('entry.html')
 
 @app.route('/about')
 def about():
-    if not session.get('logged_in'):
-        return redirect('/login')
     return render_template('about.html')
 
 @app.route('/quiz_home')
