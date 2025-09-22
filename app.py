@@ -7,8 +7,6 @@ PASSWORD = '9981'  # ここに設定したいパスワードを記入
 
 @app.route('/')  # ホーム画面のURLは 「/」
 def index():
-    if not session.get('logged_in'):
-        return redirect('/login')
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -30,6 +28,8 @@ def logout():
 
 @app.route('/profile')
 def profile():
+    if not session.get('logged_in'):
+        return redirect(url_for('login', next="/profile"))
     return render_template("profile.html")
 
 @app.route('/entry')
@@ -64,6 +64,8 @@ def quiz():
 
 @app.route('/photo')  # URLは /photo に設定
 def photo():
+    if not session.get('logged_in'):
+        return redirect(url_for('login', next="/photo"))
     return render_template('photo.html')
 
 
