@@ -186,25 +186,46 @@
             background-color: #ff69b4;
         }
 
-        /* ロゼ検定ボタン */
-        .image-button {
-            display: inline-block;
-            cursor: pointer;
-            margin: 20px auto;
-            text-align: center;
-        }
-        .image-button img {
-            width: 300px;
-            height: auto;
-            border: none;
-        }
-
         /* スマホ等でタッチ操作を優先するための設定 */
         .calendar-wrapper, .slides-wrapper {
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
             touch-action: pan-y;
+        }
+
+        /* 2×2 グリッド配置 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 左右2列 */
+            gap: -200px 50px; /* ここで位置調整！！行間-200px, 列間50px */
+            max-width: 900px;
+            margin: 50px auto; /* スライドショーからの余白 */
+            justify-items: center;
+            align-items: end; /* ここを追加：下端に揃える */
+        }
+
+        .content-grid .image-button img {
+            width: 400px;
+            height: auto;
+            box-shadow: none;
+            border-radius: 10px;
+            transition: transform 0.2s;
+            display: block;
+        }
+        .content-grid .image-button img:hover {
+            transform: scale(1.05);
+        }
+        /* カレンダータイトル */
+        .calendar-title {
+            max-width: 900px;       /* カレンダーと同じ幅 */
+            margin: 0 auto -15px;    /* 上マージン0、下マージン-15px */
+            text-align: left;       /* 左寄せ */
+            font-size: 18px;        /* お好みでサイズ調整 */
+            color: #888888;         /* グレー */
+            font-weight: bold;      /* 太字にする場合 */
+            font-weight: 400;  /* 太字→通常の細さ */
+            font-family: 'Arial', 'Helvetica', sans-serif;
         }
     </style>
 </head>
@@ -246,6 +267,27 @@
         <div class="dots" id="dotsContainer"></div>
     </div>
 
+    <!-- グリッド配置部分 -->
+    <div class="content-grid">
+        <!-- 上段 -->
+        <a href="/profile" class="image-button">
+            <img src="{{ url_for('static', filename='images/14.png') }}" alt="メンバー情報">
+        </a>
+        <a href="/entry" class="image-button">
+            <img src="{{ url_for('static', filename='images/12.png') }}" alt="イベント参加フォーム">
+        </a>
+
+        <!-- 下段 -->
+        <a href="{{ url_for('photo') }}" class="image-button">
+            <img src="{{ url_for('static', filename='images/13.png') }}" alt="ロゼ写真集">
+        </a>
+        <a href="{{ url_for('quiz_home') }}" class="image-button">
+            <img src="{{ url_for('static', filename='images/11.png') }}" alt="ロゼ検定">
+        </a>
+    </div>
+
+    <!-- カレンダータイトル -->
+    <div class="calendar-title">FC.Rose月間予定表</div>
     <!-- カレンダー -->
     <div class="calendar-container">
     <div class="calendar-wrapper" id="calendarWrapper">
@@ -253,13 +295,6 @@
         <img src="{{ url_for('static', filename='images/calendar202510.png') }}" alt="Calendar 2">
     </div>
     <div class="dots" id="calendarDots"></div>
-    </div>
-
-    <!-- ロゼ検定ボタン -->
-    <div style="text-align:center;">
-        <a href="{{ url_for('quiz_home') }}" class="image-button">
-            <img src="{{ url_for('static', filename='images/quiz_home.jpeg') }}" alt="クイズスタート">
-        </a>
     </div>
 
     <!-- スクリプト（最後まで） -->

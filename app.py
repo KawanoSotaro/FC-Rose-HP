@@ -15,7 +15,8 @@ def login():
     if request.method == 'POST':
         if request.form['password'] == PASSWORD:
             session['logged_in'] = True
-            return redirect('/')
+            next_page = request.args.get("next", "/")  # ←ここ
+            return redirect(next_page)
         else:
             error = 'パスワードが間違っています'
     return render_template('login.html', error=error)
