@@ -3,50 +3,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
-    <!-- 外部CSSを読み込む -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        html, body { margin: 0; padding: 0; }
 
-        <style>
-            html, body {
-                margin: 0;
-                padding: 0;
-            }
-            
-            /* ヘッダーバー*/
-            .header {
-                background-color: #fff; /* ヘッダーの背景白 */
-                display: flex;  
-                align-items: center;    /* 縦方向中央揃え */
-                justify-content: center; /* 中央に配置 */
-                border-bottom: 1px solid #ccc; /* 下線 */
-                padding: 10px 20px; /* 上下の余白 */
-                height: 100px; /* ヘッダーの高さ */
-                position: sticky; /* スクロールしても上部に固定 */
-                top: 0; /* 上部に固定 */
-                z-index: 999;   /* 他の要素の上に表示 */
-            }
-            .header-content {
-                display: flex;
-                align-items: center;      /* アイコンとタイトルの上下揃え */
-                justify-content: center;  /* 必須ではないけど念のため */
-            }
+        /* ヘッダーバー */
+        .header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 20px;
+            height: 100px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header-icon {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            margin-right: 30px;
+        }
+        .header-title {
+            font-size: 60px;
+            color: hotpink;
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            font-weight: bold;
+            text-align: center;
+        }
 
-            .header-icon {
-                width: 90px;   
-                height: 90px;
-                object-fit: cover; /* 画像の切り取りを綺麗に */
-                margin-right: 30px; /* アイコンとタイトルの間の余白 */
-            }
-
-            .header-title {
-                font-size: 60px; /* タイトルのフォントサイズ */ 
-                color: hotpink; /* ← ピンク色に */
-                font-family: 'Arial', 'Helvetica', sans-serif; /* ← フォント変更 */  
-                font-weight: bold; /* 太字 */
-                text-align: center; /* 中央揃え */
-            }
-            /* ハンバーガーメニューのボタン */
-            .menu-btn {
+        /* ハンバーガーメニュー */
+        .menu-btn {
             position: absolute;
             top: 50%;
             right: 20px;
@@ -57,312 +51,473 @@
             justify-content: space-between;
             transform: translateY(-50%);
             cursor: pointer;
-            z-index: 1001; /* ヘッダーより上 */
-            }
+            z-index: 1001;
+        }
+        .menu-btn span {
+            display: block;
+            height: 6px;
+            background: #333;
+            border-radius: 2px;
+        }
 
-            .menu-btn span {
-                display: block;
-                height: 6px;
-                background: #333;
-                border-radius: 2px;
-                }
+        /* メニューの枠 */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/static/images/menu_bg.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 1000;
+        }
+        .menu.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .menu a {
+            display: block;
+            margin: 60px 0;
+            font-size: 50px;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 80px;
+            color: rgb(0, 0, 0);
+            cursor: pointer;
+        }
 
-            /* メニューの枠 */
-            .menu {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+        /* スライドショー（既存） */
+        .slideshow-container {
+            max-width: 900px;
+            height: 675px;
+            margin: 30px auto;
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+            border-radius: 0px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .slides-wrapper {
+            display: flex;
+            transition: transform 0.2s ease-in-out;
+            width: 5400px; /* 900px × 6枚 */
+        }
+        .slides-wrapper img {
+            width: 900px;
+            height: 675px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
 
-                /* 画像を背景に設定 */
-                background: url('/static/images/menu_bg.png') no-repeat center center;
-                background-size: cover; /* 画面いっぱいに引き伸ばす */
+        /* ドットナビゲーション（既存） */
+        .dots {
+            text-align: center;
+            margin-top: 15px;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            z-index: 10;
+        }
+        .dots span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .dots span.active {
+            background-color: #ff69b4;
+        }
 
-                display: flex;
-                flex-direction: column; /* メニュー縦並び */
-                align-items: center;
-                justify-content: center;
-                align-items: center;     /* 垂直方向中央 */
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.5s ease;
-                z-index: 1000;
-                }
-
-            /* 表示状態 */
-            .menu.active {
-                opacity: 1;
-                pointer-events: auto; /* 表示時はクリック可能 */
-            }
-
-            /* メニューのリンク */
-            .menu a {
-                display: block;
-                margin: 60px 0; /* 行間を広く */
-                font-size: 50px;  
-                color: #fff;
-                text-decoration: none;
-                transition: color 0.3s;
-                }
-        
-            /* 閉じるボタン */
-            .close-btn { 
-                position: absolute;
-                top: 20px;
-                right: 30px;
-                font-size: 80px;
-                color: rgb(0, 0, 0);
-                cursor: pointer;
-            }
-            
-            /* スライドショー */
-            .slideshow-container {
-               max-width: 900px; /* スライドショーの横幅 */
-               height: 675px; /* スライドショーの高さ */
-               margin: 30px auto; /* 中央に配置 */
-               position: relative; /* スライドの位置を相対的に */
-               overflow: hidden; /* はみ出しを隠す */
-               background-color: #fff; /* 背景白 */
-               border-radius: 10px; /* 角丸 */
-               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* 軽い影をつける */
-            }
-            
-            .slides-wrapper {
-                display: flex;            /* 横並びにする */
-                transition: transform 0.2s ease-in-out; /* スライドの滑らかな動き */
-                width: 5400px; /* 900px × 6枚 */
-                }
-                
-            .slides-wrapper img {
-                width: 900px;            /* 横幅を固定 */
-                height: 675px;           /* 高さも固定 */
-                object-fit: cover;       /* 画像の切り取りを綺麗に */
-                flex-shrink: 0;          /* 縮まないように */
-                }
-            /* ロゼ検定のボタン */
-            .image-button {
-                display: inline-block;
-                cursor: pointer;
-            }
-
-            .image-button img {
-                width: 300px;   /* サイズ調整はお好みで */
-                height: auto;
-                border: none;
-            }
-            
-            /* ドットナビゲーション */
-            .dots {
-                text-align: center;
-                margin-top: 15px;
-                position: absolute;
-                bottom: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-                z-index: 10;
-                }
-
-            .dots span {
-                display: inline-block;
-                width: 10px;
-                height: 10px;
-                margin: 0 5px;
-                background-color: #ccc;
-                border-radius: 50%;
-                cursor: pointer;
-                transition: background-color 0.3s;
-                }
-
-            .dots span.active {
-                background-color: #ff69b4; /* ピンク色で現在位置を示す */
-                }
-                
-                /* カレンダー画像 */
-            .calendar {
-                width: 100%;
-                max-width: 900px;
-                display: block;
-                margin: 30px auto;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                border-radius: 8px; /* 角を少し丸くすると、さらに柔らかい印象に */
-                }
-        </style>
-    </head>
-    <body>
-        <!-- ヘッダーバー -->
-        <div class="header">
-            <div class="header-content">
-                <img src="/static/images/icon.jpeg" alt="アイコン" class="header-icon">
-                <span class="header-title">FC.Rose</span>
-            </div>
-            <div class="menu-btn" id="menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-
-        <!-- メニュー本体 -->
-        <nav class="menu" id="menu">
-            <div class="close-btn">✕</div>
-            <a href="#">サークルの説明</a>
-            <a href="#">メンバー情報</a>
-            <a href="#">幹部マニュアル</a>
-            <a href="#">サークルへの提案フォーム</a>
-            <a href="#">ロゼ写真集</a>
-            <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">📷 Instagram</a>
-        </nav>
-
-        <!-- スライドショー部分 -->
-        <div class="slideshow-container">
-            <div class="slides-wrapper" id="slidesWrapper">
-                <!-- 最後の画像のクローン -->
-                <img src="/static/images/rose4.jpeg" alt="clone4">
-                <img src="/static/images/rose1.jpeg" alt="スライド1">
-                <img src="/static/images/rose2.jpeg" alt="スライド2">
-                <img src="/static/images/rose3.JPG" alt="スライド3">
-                <img src="/static/images/rose4.jpeg" alt="スライド4">
-                <!-- 最初の画像のクローン -->
-                <img src="/static/images/rose1.jpeg" alt="clone1">
-            </div>
-            <!-- ドットナビゲーション -->
-            <div class="dots" id="dotsContainer"></div>
-        </div>
+        /* カレンダー用スタイル */
+        .calendar-container {
+        position: relative;
+        max-width: 900px; /* 元のカレンダー幅 */
+        margin: 20px auto;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        overflow: hidden; /* はみ出しを隠す */
+        }
     
-        <!-- カレンダー画像 -->
-        <img src="/static/images/calendar258.png" alt="今月のカレンダー" class="calendar">
-        
-        <!-- ロゼ検定へ遷移 -->
+
+        .calendar-wrapper {
+        display: flex;
+        width: 200%; /* 画像2枚分 */
+        transition: transform 0.3s ease;
+        }
+
+        .calendar-wrapper img {
+        width: 50%;   /* 横幅にフィット */
+        height: auto;  /* 縦は比率維持 */
+        flex-shrink: 0;
+        }
+        .calendar-dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .calendar-dots span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .calendar-dots span.active {
+            background-color: #ff69b4;
+        }
+
+        /* ロゼ検定ボタン */
+        .image-button {
+            display: inline-block;
+            cursor: pointer;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .image-button img {
+            width: 300px;
+            height: auto;
+            border: none;
+        }
+
+        /* スマホ等でタッチ操作を優先するための設定 */
+        .calendar-wrapper, .slides-wrapper {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: pan-y;
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダーバー -->
+    <div class="header">
+        <div class="header-content">
+            <img src="/static/images/icon.jpeg" alt="アイコン" class="header-icon">
+            <span class="header-title">FC.Rose</span>
+        </div>
+        <div class="menu-btn" id="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- メニュー本体 -->
+    <nav class="menu" id="menu">
+        <div class="close-btn">✕</div>
+        <a href="#">サークルの説明</a>
+        <a href="#">メンバー情報</a>
+        <a href="#">幹部マニュアル</a>
+        <a href="#">サークルへの提案フォーム</a>
+        <a href="#">ロゼ写真集</a>
+        <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">📷 Instagram</a>
+    </nav>
+
+    <!-- スライドショー部分（既存4枚、自動） -->
+    <div class="slideshow-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            <img src="/static/images/rose4.jpeg" alt="clone4">
+            <img src="/static/images/rose1.jpeg" alt="スライド1">
+            <img src="/static/images/rose2.jpeg" alt="スライド2">
+            <img src="/static/images/rose3.JPG" alt="スライド3">
+            <img src="/static/images/rose4.jpeg" alt="スライド4">
+            <img src="/static/images/rose1.jpeg" alt="clone1">
+        </div>
+        <div class="dots" id="dotsContainer"></div>
+    </div>
+
+    <!-- カレンダー -->
+    <div class="calendar-container">
+    <div class="calendar-wrapper" id="calendarWrapper">
+        <img src="{{ url_for('static', filename='images/calendar20259.png') }}" alt="Calendar 1">
+        <img src="{{ url_for('static', filename='images/calendar202510.png') }}" alt="Calendar 2">
+    </div>
+    <div class="dots" id="calendarDots"></div>
+    </div>
+
+    <!-- ロゼ検定ボタン -->
+    <div style="text-align:center;">
         <a href="{{ url_for('quiz_home') }}" class="image-button">
             <img src="{{ url_for('static', filename='images/quiz_home.jpeg') }}" alt="クイズスタート">
         </a>
-        
-        <!-- スクリプト（自動スライド） -->
-        <script>
-        // メニューの開閉処理
-        document.getElementById("menu-btn").addEventListener("click", function() {
+    </div>
+
+    <!-- スクリプト（最後まで） -->
+    <script>
+    // -------------------- メニュー開閉 --------------------
+    document.getElementById("menu-btn").addEventListener("click", function() {
         document.getElementById("menu").classList.toggle("active");
-        });
+    });
+    document.querySelector(".close-btn").addEventListener("click", function() {
+        document.getElementById("menu").classList.remove("active");
+    });
 
-        // 閉じるボタン
-        document.querySelector(".close-btn").addEventListener("click", function() {
-            document.getElementById("menu").classList.remove("active");
-        });
-
+    // -------------------- 既存スライドショー（自動4枚） --------------------
+    (function(){
         const slidesWrapper = document.getElementById('slidesWrapper');
-        const slideImages = slidesWrapper.querySelectorAll('img');
-        const dotsContainer = document.getElementById('dotsContainer');
-        const slideWidth = 900; // 画像の幅（CSSに合わせる）
-        const totalSlides = 4; // 本物の画像の数（クローンを除く）
-
-        let currentIndex = 1; // スタートは2枚目（1-indexed）→img1
+        const slideWidth = 900;
+        const totalSlides = 4;
+        let currentIndex = 1;
         let isAnimating = false;
 
-        // ドットを生成
-        for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('span');
-        if (i === 0) dot.classList.add('active');
-        dotsContainer.appendChild(dot);
+        // ドット生成
+        const dotsContainer = document.getElementById('dotsContainer');
+        for (let i=0;i<totalSlides;i++){
+            const dot=document.createElement('span');
+            if(i===0) dot.classList.add('active');
+            dot.addEventListener('click', (e)=>{
+                if(isAnimating) return;
+                moveToSlide(i+1);
+            });
+            dotsContainer.appendChild(dot);
         }
-
         const dots = dotsContainer.querySelectorAll('span');
 
-        function updateDots(index) {
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[index % totalSlides].classList.add('active');
+        function updateDots(index){
+            dots.forEach(d=>d.classList.remove('active'));
+            dots[index % totalSlides].classList.add('active');
         }
 
-        function moveToSlide(index) {
-        if (isAnimating) return;
-        isAnimating = true;
-        slidesWrapper.style.transition = "transform 0.5s ease-in-out";
-        slidesWrapper.style.transform = `translateX(-${index * slideWidth}px)`;
-        currentIndex = index;
+        function moveToSlide(index){
+            if(isAnimating) return;
+            isAnimating=true;
+            slidesWrapper.style.transition="transform 0.5s ease-in-out";
+            slidesWrapper.style.transform=`translateX(${-index*slideWidth}px)`;
+            currentIndex=index;
+            setTimeout(()=>{
+                if(currentIndex===0){
+                    slidesWrapper.style.transition="none";
+                    slidesWrapper.style.transform=`translateX(${-totalSlides*slideWidth}px)`;
+                    currentIndex=totalSlides;
+                } else if(currentIndex===totalSlides+1){
+                    slidesWrapper.style.transition="none";
+                    slidesWrapper.style.transform=`translateX(${-slideWidth}px)`;
+                    currentIndex=1;
+                }
+                updateDots(currentIndex-1);
+                isAnimating=false;
+            },500);
+        }
 
-        setTimeout(() => {
-            if (currentIndex === 0) {
-            slidesWrapper.style.transition = "none";
-            slidesWrapper.style.transform = `translateX(-${totalSlides * slideWidth}px)`;
-            currentIndex = totalSlides;
-            } else if (currentIndex === totalSlides + 1) {
-            slidesWrapper.style.transition = "none";
-            slidesWrapper.style.transform = `translateX(-${slideWidth}px)`;
-            currentIndex = 1;
+        function nextSlide(){ moveToSlide(currentIndex+1); }
+
+        // 初期ポジション
+        slidesWrapper.style.transform=`translateX(${-slideWidth}px)`;
+
+        // 自動スライド（既存）
+        setInterval(nextSlide,5000);
+
+        // タッチスワイプ（既存）
+        let startX=0,startY=0,isSwiping=false,isHorizontalSwipe=false;
+        slidesWrapper.addEventListener('touchstart',function(e){
+            startX=e.touches[0].clientX;
+            startY=e.touches[0].clientY;
+            isSwiping=true;
+            isHorizontalSwipe=false;
+        },{passive:true});
+        slidesWrapper.addEventListener('touchmove',function(e){
+            if(!isSwiping) return;
+            const currentX=e.touches[0].clientX;
+            const currentY=e.touches[0].clientY;
+            const diffX=currentX-startX;
+            const diffY=currentY-startY;
+            if(!isHorizontalSwipe && Math.abs(diffX)>Math.abs(diffY)){
+                isHorizontalSwipe=true;
+                e.preventDefault();
             }
-            updateDots(currentIndex - 1);
-            isAnimating = false;
-        }, 500);
+            if(isHorizontalSwipe){
+                slidesWrapper.style.transition='none';
+                slidesWrapper.style.transform=`translateX(${-currentIndex*slideWidth+diffX}px)`;
+            }
+        },{passive:false});
+        slidesWrapper.addEventListener('touchend',function(e){
+            if(!isSwiping) return;
+            const endX=e.changedTouches[0].clientX;
+            const diffX=endX-startX;
+            if(isHorizontalSwipe){
+                slidesWrapper.style.transition='transform 0.15s ease-out';
+                if(diffX>50) moveToSlide(currentIndex-1);
+                else if(diffX<-50) moveToSlide(currentIndex+1);
+                else moveToSlide(currentIndex);
+            }
+            isSwiping=false;
+            isHorizontalSwipe=false;
+        });
+    })();
+
+    // -------------------- カレンダー（手動スワイプ・ドット・左右往復可・ボタン無し） --------------------
+    (function(){
+        const calendarWrapper = document.getElementById('calendarWrapper');
+        const calendarImgs = Array.from(calendarWrapper.querySelectorAll('img'));
+        const calendarDotsContainer = document.getElementById('calendarDots');
+        let currentCalendar = 0;
+        let imgWidth = null; // ピクセル幅（naturalWidth を使う）
+
+        // ドット作成
+        calendarImgs.forEach((_,i)=>{
+            const dot = document.createElement('span');
+            if(i===0) dot.classList.add('active');
+            dot.addEventListener('click', ()=> showCalendar(i));
+            calendarDotsContainer.appendChild(dot);
+        });
+        const calendarDots = calendarDotsContainer.querySelectorAll('span');
+
+        function updateCalendarDots(index){
+            calendarDots.forEach(d=>d.classList.remove('active'));
+            calendarDots[index].classList.add('active');
         }
 
-        function nextSlide() {
-        moveToSlide(currentIndex + 1);
+        // 画像読み込みを待って幅を設定（naturalWidth を優先）
+        function computeImgWidth(){
+            const container = document.querySelector('.calendar-container');
+            imgWidth = container.offsetWidth; // ← containerの幅にする
+            calendarImgs.forEach(img=>{
+                img.style.width = imgWidth + 'px';
+                img.style.height = 'auto';
+            });
+            calendarWrapper.style.transform = `translateX(${-currentCalendar * imgWidth}px)`;
         }
 
-        // 最初のスライド表示をセット（ページ読み込み直後に1枚目をしっかり表示）
-        slidesWrapper.style.transform = `translateX(-${slideWidth}px)`;
-        setInterval(nextSlide, 5000);
-        // タッチスワイプ対応
-        let startX = 0;
-        let startY = 0;
-        let isSwiping = false;
-        let isHorizontalSwipe = false;
+        // 画像が全て読み込まれたら compute
+        let loadedCount = 0;
+        calendarImgs.forEach(img=>{
+            if(img.complete && img.naturalWidth !== 0){
+                loadedCount++;
+            } else {
+                img.addEventListener('load', ()=> {
+                    loadedCount++;
+                    if(loadedCount === calendarImgs.length) computeImgWidth();
+                });
+            }
+        });
+        // 既に読み込まれている場合
+        if(loadedCount === calendarImgs.length){
+            computeImgWidth();
+        } else {
+            // それでも念のため最小遅延で実行
+            setTimeout(()=>{ if(!imgWidth) computeImgWidth(); }, 300);
+        }
 
-        slidesWrapper.addEventListener('touchstart', function (e) {
+        // ウィンドウリサイズ時に再計算
+        window.addEventListener('resize', function(){
+            // 再計算：使いやすくするため、使える naturalWidth を再取得
+            computeImgWidth();
+        });
+
+        function showCalendar(index){
+            // 範囲内にクランプ
+            if(index < 0) index = 0;
+            if(index > calendarImgs.length - 1) index = calendarImgs.length - 1;
+            currentCalendar = index;
+            calendarWrapper.style.transition = 'transform 0.3s ease';
+            calendarWrapper.style.transform = `translateX(${-currentCalendar * imgWidth}px)`;
+            updateCalendarDots(currentCalendar);
+        }
+
+        // スワイプ処理（タッチ・マウス両対応）
+        let startX = 0, startY = 0, isSwiping = false, isHorizontal = false;
+
+        // touchstart / mousedown
+        calendarWrapper.addEventListener('touchstart', function(e){
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
             isSwiping = true;
-            isHorizontalSwipe = false;
-        }, { passive: true });
-
-        slidesWrapper.addEventListener('touchmove', function (e) {
-            if (!isSwiping) return;
-
-            const currentX = e.touches[0].clientX;
-            const currentY = e.touches[0].clientY;
-            const diffX = currentX - startX;
-            const diffY = currentY - startY;
-
-            // 最初の移動で横スワイプか縦スワイプかを判断
-            if (!isHorizontalSwipe && Math.abs(diffX) > Math.abs(diffY)) {
-                isHorizontalSwipe = true;
-                e.preventDefault(); // 横スワイプのときだけ縦スクロールを止める
-            }
-
-            if (isHorizontalSwipe) {
-                slidesWrapper.style.transition = 'none';
-                slidesWrapper.style.transform = `translateX(-${currentIndex * slideWidth - diffX}px)`;
-            }
-        }, { passive: false });
-
-        slidesWrapper.addEventListener('touchend', function (e) {
-            if (!isSwiping) return;
-
-            const endX = e.changedTouches[0].clientX;
-            const diffX = endX - startX;
-
-            if (isHorizontalSwipe) {
-                // ⭐️ 指を離した後の切り替えスピードを速く
-                slidesWrapper.style.transition = 'transform 0.15s ease-out';
-
-                if (diffX > 50) {
-                    prevSlide();
-                } else if (diffX < -50) {
-                    nextSlide();
-                } else {
-                    showSlide(currentIndex);
-                }
-            }
-
-            isSwiping = false;
-            isHorizontalSwipe = false;
+            isHorizontal = false;
+            calendarWrapper.style.transition = 'none';
+        }, {passive:true});
+        calendarWrapper.addEventListener('mousedown', function(e){
+            startX = e.clientX;
+            startY = e.clientY;
+            isSwiping = true;
+            isHorizontal = false;
+            calendarWrapper.style.transition = 'none';
+            // prevent text/image drag default
+            e.preventDefault();
         });
-        </script>
 
-        <!-- 他のページへのリンク -->
-<p><a href="/profile">メンバー情報を見る（PDF）</a></p>
-<p><a href="/entry">イベント参加フォーム</a></p>
-<p><a href="/about">FC.Roseの紹介を見る</a></p>
-<p><a href="{{ url_for('photo') }}">ロゼ写真集</a></p>
+        // touchmove / mousemove
+        function onMove(clientX, clientY){
+            if(!isSwiping) return;
+            const diffX = clientX - startX;
+            const diffY = clientY - startY;
+            if(!isHorizontal && Math.abs(diffX) > Math.abs(diffY)){
+                isHorizontal = true;
+            }
+            if(isHorizontal){
+                // move visually by diffX, relative to current index
+                calendarWrapper.style.transform = `translateX(${-currentCalendar * imgWidth + diffX}px)`;
+            }
+        }
+        calendarWrapper.addEventListener('touchmove', function(e){
+            if(!isSwiping) return;
+            onMove(e.touches[0].clientX, e.touches[0].clientY);
+            // prevent vertical scroll when horizontal swipe detected
+            if(isHorizontal) e.preventDefault();
+        }, {passive:false});
+        document.addEventListener('mousemove', function(e){
+            onMove(e.clientX, e.clientY);
+        });
 
+        // touchend / mouseup
+        function endSwipe(clientX){
+            if(!isSwiping) return;
+            const diffX = clientX - startX;
+            calendarWrapper.style.transition = 'transform 0.25s ease';
+            const threshold = Math.max(30, imgWidth * 0.08); // 30px or 8%幅
+            if(diffX > threshold){
+                // swipe right -> previous
+                showCalendar(Math.max(currentCalendar - 1, 0));
+            } else if(diffX < -threshold){
+                // swipe left -> next
+                showCalendar(Math.min(currentCalendar + 1, calendarImgs.length - 1));
+            } else {
+                // restore
+                showCalendar(currentCalendar);
+            }
+            isSwiping = false;
+            isHorizontal = false;
+        }
+        calendarWrapper.addEventListener('touchend', function(e){
+            endSwipe(e.changedTouches[0].clientX);
+        });
+        document.addEventListener('mouseup', function(e){
+            endSwipe(e.clientX);
+        });
+
+        // ドットクリック
+        calendarDots.forEach((dot, i) => {
+            dot.addEventListener('click', () => showCalendar(i));
+        });
+
+        // 初期ドット状態
+        updateCalendarDots(0);
+    })();
+    </script>
+
+    <!-- 他ページリンク -->
+    <p style="text-align:center;"><a href="/profile">メンバー情報を見る（PDF）</a></p>
+    <p style="text-align:center;"><a href="/entry">イベント参加フォーム</a></p>
+    <p style="text-align:center;"><a href="/about">FC.Roseの紹介を見る</a></p>
+    <p style="text-align:center;"><a href="{{ url_for('photo') }}">ロゼ写真集</a></p>
+</body>
+</html>

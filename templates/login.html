@@ -31,6 +31,13 @@
             margin-bottom: 20px;
             font-size: 20px;
         }
+        
+        /* サブ説明文 */
+        .login-box .note {
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #666;
+        }
 
         .login-box input[type="password"] {
             width: 100%;
@@ -69,6 +76,7 @@
 <body>
     <div class="login-box">
         <h2>パスワードを入力してください</h2>
+        <p class="note">パスワードは全体グループのノートから確認できます。</p>
         <form method="POST">
             <input type="password" name="password" placeholder="パスワード">
             <button type="submit">ログイン</button>
