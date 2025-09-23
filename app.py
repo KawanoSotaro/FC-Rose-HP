@@ -65,6 +65,10 @@ def photo():
         return redirect(url_for('login', next="/photo"))
     return render_template('photo.html')
 
+@app.route("/manual")
+def manual():
+    return render_template("manual.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

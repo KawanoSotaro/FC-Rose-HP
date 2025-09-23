@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+    <style>
+        #pdf-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        canvas {
+            display: block;
+            margin: 10px auto;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="pdf-container"></div>
+
+    <script>
+        const url = "{{ url_for('static', filename='pdf/FC.Rosemanual.pdf') }}";
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.worker.min.js';
+
+        (async () => {
+            const pdf = await pdfjsLib.getDocument(url).promise;
+            const container = document.getElementById("pdf-container");
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const scale = 1.5;  // 大きさは調整可
+                const viewport = page.getViewport({ scale });
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                container.appendChild(canvas);
+                await page.render({ canvasContext: context, viewport }).promise;
+            }
+        })();
+    </script>
+</body>
+</html>
