@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>イベント参加フォーム</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+html {
+    background-color: #fff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #fff;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* ヘッダー（水色バー） */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background-color: #d1fefd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #ccc;
+    z-index: 999;
+    box-sizing: border-box;
+}
+.header-img {
+    height: 80px;          /* ヘッダー内での高さを指定 */
+    width: auto;           /* 横幅は自動調整 */
+    display: block;
+    margin: 0 auto;        /* 中央寄せ */
+}
+
+
+/* ヘッダーでコンテンツが隠れないように余白調整 */
+body > *:not(.header) {
+    margin-top: 150px;
+}
+
+/* タイトル */
+h1 {
+    margin: 100px 0 20px 0;
+    font-size: 50px;
+    text-align: center;
+}
+
+/* 横線 */
+.divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    width: 100%;
+}
+
+/* イベントセット全体のラッパー */
+.event-wrapper {
+    padding: 0 60px; /* 横幅は60pxの余白を維持 */
+    margin-top: 50px; /* 上下位置はここで自由に調整 */
+}
+
+/* テキストと画像のセット */
+.event-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.event-text {
+    flex: 1;
+    font-size: 32px;
+    line-height: 1.6;
+    min-width: 0;
+}
+
+.event-text small {
+    display: block;
+    margin-top: 10px;
+    font-size: 20px;
+    color: gray;
+}
+
+.event-image {
+    flex: 0.7;
+    margin-top: 30px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.event-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px; /* 角丸 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* COMMING SOON全体のラッパー */
+.commingsoon-wrapper {
+    padding: 0 60px; /* 横幅は60pxの余白を維持 */
+    margin-top: 50px; /* 上下位置はここで自由に調整 */
+}
+
+/* テキストと画像のセット（COMMING SOON） */
+.commingsoon-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.commingsoon-text {
+    flex: 1;
+    font-size: 32px;
+    line-height: 1.6;
+    min-width: 0;
+}
+.commingsoon-text big {
+    display: block;
+    margin-top: 100px;
+    font-size: 40px;
+    color: #000;
+}
+
+.commingsoon-image {
+    flex: 0.7;
+    margin-top: 30px;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.commingsoon-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px; /* 角丸 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+</style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <!-- ヘッダー -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='images/eventtext.png') }}" 
+            alt="ヘッダー画像" 
+            class="header-img">
+    </div>
+
+    <!-- タイトル -->
+    <h1>〜現在開催予定のイベント〜</h1>
+
+    <!-- イベントセット（横線＋テキスト＋画像） -->
+    <div class="event-wrapper" style="margin-top: 20px;"> <!-- このmargin-topで上下位置を調整 -->
+        <hr class="divider"> <!-- 上の横線 -->
+        <div class="event-container">
+            <div class="event-text">
+                <p>
+                    ◆BBQ🍖<br>
+                    日時：10/12 14:00~17:00<br>
+                    参加費：3500円程度<br>
+                    参加方法：ノートにリアクション<br>
+                    参加フォーム：なし
+                </p>
+                <small>参加に「フォーム入力」が必要な場合はここにフォームが表示されます。</small>
+            </div>
+            <div class="event-image">
+                <img src="{{ url_for('static', filename='images/IMG_8670.jpeg') }}" alt="イベント画像">
+            </div>
+        </div>
+    </div>
+    <div class="commingsoon-wrapper" style="margin-top: 40px;">
+        <hr class="divider">
+        <div class="commingsoon-container">
+            <div class="commingsoon-text">
+                <p>◆？？？</p>
+                <big>COMMING SOON...</big>
+            </div>
+            <div class="commingsoon-image">
+                <img src="{{ url_for('static', filename='images/commingsoon.png') }}" alt="イベント画像">
+            </div>
+        </div>
+    </div>
+
+    <!-- ここに同じ構造をコピーして二つ目のイベントセットを作れます -->
+    <!--<div class="event-wrapper" style="margin-top: 40px;"> 
+        <hr class="divider"> 
+        <div class="event-container">
+            <div class="event-text">
+                <p>
+                    ◆BBQ🍖<br>
+                    日時：10/12 14:00~17:00<br>
+                    参加費：3500円程度<br>
+                    参加方法：ノートにリアクション<br>
+                    参加フォーム：なし（ここにURLでいい！）
+                </p>
+                <small>参加に「フォーム入力」が必要な場合はここにフォームが表示されます。</small>
+            </div>
+            <div class="event-image">
+                <img src="{{ url_for('static', filename='images/IMG_8670.jpeg') }}" alt="イベント画像">
+            </div>
+        </div>
+    </div> イベントが発生した場合、これの括弧を外して見せて、commingsoonに括弧をつける-->
+
+</body>
+</html>

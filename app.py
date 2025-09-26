@@ -69,6 +69,10 @@ def photo():
 def manual():
     return render_template("manual.html")
 
+@app.route("/event")
+def event():
+    return render_template("event.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
