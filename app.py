@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, redirect, session, url_for, send_from_directory
-import random
+from flask import Flask, render_template, request, redirect, session, url_for
+from datetime import timedelta
+
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # sessionを使うなら絶対必要！
+app.secret_key = 'your_secret_key'
 
-PASSWORD = '9981'  # ここに設定したいパスワードを記入
+# セッションの有効期限を30分に設定
+app.permanent_session_lifetime = timedelta(minutes=30)
 
-@app.route('/')  # ホーム画面のURLは 「/」
+PASSWORD = '9981'
+
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -14,9 +18,13 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['password'] == PASSWORD:
+            session.permanent = True  # セッション有効化
             session['logged_in'] = True
-            next_page = request.args.get("next", "/")  # ←ここ
-            return redirect(next_page)
+            next_page = request.args.get("next", "/")
+            # ログイン後はブラウザ履歴を置き換え
+            response = redirect(next_page)
+            response.headers['Cache-Control'] = 'no-store'  # ブラウザに残さない
+            return response
         else:
             error = 'パスワードが間違っています'
     return render_template('login.html', error=error)
@@ -24,18 +32,27 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return redirect('/login')
+    return redirect('/')
 
+# 共通関数：ログイン必須ページのチェック
+def login_required(next_page):
+    if not session.get('logged_in'):
+        return redirect(url_for('login', next=next_page))
+    return None
+
+@app.route('/photo')
+def photo():
+    redirect_response = login_required('/photo')
+    if redirect_response:
+        return redirect_response
+    return render_template('photo.html')
 
 @app.route('/profile')
 def profile():
-    if not session.get('logged_in'):
-        return redirect(url_for('login', next="/profile"))
-    return render_template("profile.html")
-
-@app.route('/entry')
-def entry():
-    return render_template('entry.html')
+    redirect_response = login_required('/profile')
+    if redirect_response:
+        return redirect_response
+    return render_template('profile.html')
 
 @app.route('/about')
 def about():
@@ -50,20 +67,14 @@ def quiz():
     questions = [
         {
             "id": 1,
-            "question_img": "images/quiz_nakami/q1.png",   # 問題画像
-            "label_img": "images/quiz_nakami/q101.png",  # 「第1問目」画像
+            "question_img": "images/quiz_nakami/q1.png",
+            "label_img": "images/quiz_nakami/q101.png",
             "choices": ["選択肢A", "選択肢B", "選択肢C", "選択肢D"],
             "answer": 0,
             "explanation": "これはテスト用の解説です。"
         }
     ]
     return render_template("quiz.html", questions=questions)
-
-@app.route('/photo')  # URLは /photo に設定
-def photo():
-    if not session.get('logged_in'):
-        return redirect(url_for('login', next="/photo"))
-    return render_template('photo.html')
 
 @app.route("/manual")
 def manual():
@@ -72,7 +83,6 @@ def manual():
 @app.route("/event")
 def event():
     return render_template("event.html")
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

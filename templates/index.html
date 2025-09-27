@@ -67,12 +67,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('/static/images/menu_bg.png') no-repeat center center;
+            background:#FFECFD;
             background-size: cover;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding-top: 70px; /* 下げたい分だけ調整 */
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
@@ -84,12 +85,32 @@
         }
         .menu a {
             display: block;
-            margin: 60px 0;
-            font-size: 50px;
-            color: #fff;
-            text-decoration: none;
-            transition: color 0.3s;
+            margin: 30px 0; /* 上下の間隔（調整可） */
         }
+
+        .menu img {
+            width: 100px;   /* 画像の幅（調整可） */
+            height: auto;   /* 縦横比を維持 */
+            display: block; /* aタグ内で余白が出ないように */
+        }
+
+        .menu-size {
+            width: 600px!important;   /* 画像の幅（調整可） */
+            height: auto;   /* 縦横比を維持 */
+            display: block; /* aタグ内で余白が出ないように */
+        }
+        .sns-links {
+            display: flex;          /* 横並びにする */
+            gap: 60px;              /* 画像の間隔を調整 */
+            margin-top: 100px;       /* 上のメニューと間隔を取る */
+            justify-content: center; /* 中央寄せ */
+        }
+
+        .sns-links img {
+            width: 80px;   /* SNSアイコンの大きさ調整 */
+            height: auto;
+        }
+
         .close-btn {
             position: absolute;
             top: 20px;
@@ -156,7 +177,6 @@
         overflow: hidden; /* はみ出しを隠す */
         }
     
-
         .calendar-wrapper {
         display: flex;
         width: 200%; /* 画像2枚分 */
@@ -243,17 +263,48 @@
         </div>
     </div>
 
-    <!-- メニュー本体 -->
+        <!-- メニュー本体 -->
     <nav class="menu" id="menu">
         <div class="close-btn">✕</div>
-        <a href="/about">サークルの説明</a>
-        <a href="https://forms.gle/YrcrBgRyub1ftP4L8" target="_blank">サークルへの提案フォーム</a>
-        <a href="/profile">メンバー情報</a>
-        <a href="/event">イベント参加フォーム</a>
-        <a href="/photo">ロゼ写真集</a>
-        <a href="/quiz_home">ロゼ検定</a>
-        <a href="{{ url_for('manual') }}">幹部マニュアル</a>
-        <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">📷 Instagram</a>
+
+        <a href="/about">
+            <img src="{{ url_for('static', filename='images/menu/menu1.png') }}" alt="サークルの説明" class="menu-size">
+        </a>
+
+        <a href="https://forms.gle/YrcrBgRyub1ftP4L8" target="_blank">
+            <img src="{{ url_for('static', filename='images/menu/menu2.png') }}" alt="サークルへの提案フォーム" class="menu-size">
+        </a>
+
+        <a href="/profile">
+            <img src="{{ url_for('static', filename='images/menu/menu3.png') }}" alt="メンバー情報" class="menu-size">
+        </a>
+
+        <a href="/event">
+            <img src="{{ url_for('static', filename='images/menu/menu4.png') }}" alt="イベント参加フォーム" class="menu-size">
+        </a>
+
+        <a href="/photo">
+            <img src="{{ url_for('static', filename='images/menu/menu5.png') }}" alt="ロゼ写真集" class="menu-size">
+        </a>
+
+        <a href="/quiz_home">
+            <img src="{{ url_for('static', filename='images/menu/menu6.png') }}" alt="ロゼ検定" class="menu-size">
+        </a>
+
+        <a href="{{ url_for('manual') }}">
+            <img src="{{ url_for('static', filename='images/menu/menu7.png') }}" alt="幹部マニュアル" class="menu-size">
+        </a>
+
+        <!-- SNSアイコンだけ横並びにする -->
+        <div class="sns-links">
+            <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">
+                <img src="{{ url_for('static', filename='images/menu/menuinsta.png') }}" alt="Instagram">
+            </a>
+
+            <a href="https://x.com/meiji_fcrose?s=21&t=NC3LiqFG9kRu21tU4KBOkQ" target="_blank">
+                <img src="{{ url_for('static', filename='images/menu/menux.png') }}" alt="Twitter">
+            </a>
+        </div>
     </nav>
 
     <!-- スライドショー部分（既存4枚、自動） -->
@@ -275,7 +326,7 @@
         <a href="/profile" class="image-button">
             <img src="{{ url_for('static', filename='images/14.png') }}" alt="メンバー情報">
         </a>
-        <a href="/entry" class="image-button">
+        <a href="/event" class="image-button">
             <img src="{{ url_for('static', filename='images/12.png') }}" alt="イベント参加フォーム">
         </a>
 

@@ -169,10 +169,15 @@ body {
   display: none;
 }
 
+/* 正解・不正解のオーバーレイ画像 */
 #overlay img {
-  max-width: 70%;
-  height: auto;
-  object-fit: contain;
+  width: 850px;   /* 好きな幅に調整 */
+  height: auto;   /* 縦横比を維持 */
+  position: absolute;
+  top: 50%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 
 #next-btn {
@@ -182,21 +187,6 @@ body {
     cursor: pointer;
 }
 
-/* 正解/不正解 */
-#explanation {
-  display: flex;
-  justify-content: center; /* 横方向中央 */
-  align-items: center;     /* 縦方向中央（必要に応じて） */
-  font-size: 28px;
-  font-weight: bold;
-  color: #000;
-  text-align: center;      /* テキストも中央揃え */
-  white-space: pre-line;   /* 改行反映 */
-  line-height: 1.6;
-  margin: 20px auto;       /* 上下余白と中央揃え */
-  max-width: 90%;          /* 画面幅に応じて折り返し */
-  z-index: 1000;
-}
 
 /* フォント埋め込み */
 @font-face {
@@ -247,16 +237,6 @@ body {
   top: 80px;   /* 上から80px下げる */
 }
 
-/* 正解・不正解のオーバーレイ画像 */
-#overlay img {
-  max-width: 80%;   /* 画面幅の80%まで */
-  height: auto;
-  position: absolute;
-  top: 50%;          /* 画面中央寄せ */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-}
 /* 次へボタン */
 #next-btn {
   display: none;          /* JSで制御されるので初期は非表示 */
