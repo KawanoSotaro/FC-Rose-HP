@@ -7,7 +7,7 @@ app.secret_key = 'your_secret_key'
 # セッションの有効期限を30分に設定
 app.permanent_session_lifetime = timedelta(minutes=30)
 
-PASSWORD = '9981'
+PASSWORD = '9981'  # パスワード設定
 
 @app.route('/')
 def index():
@@ -18,12 +18,14 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['password'] == PASSWORD:
-            session.permanent = True  # セッション有効化
+            session.permanent = True  # セッションを有効化
             session['logged_in'] = True
             next_page = request.args.get("next", "/")
-            # ログイン後はブラウザ履歴を置き換え
             response = redirect(next_page)
-            response.headers['Cache-Control'] = 'no-store'  # ブラウザに残さない
+            # ブラウザキャッシュに残さないようにする
+            response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+            response.headers['Pragma'] = 'no-cache'
+            response.headers['Expires'] = '0'
             return response
         else:
             error = 'パスワードが間違っています'
@@ -61,6 +63,9 @@ def about():
 @app.route('/quiz_home')
 def quiz_home():
     return render_template('quiz_home.html')
+@app.route('/quiza_home')
+def quiza_home():
+    return render_template('quiza_home.html')
 
 @app.route("/quiz")
 def quiz():
@@ -75,6 +80,20 @@ def quiz():
         }
     ]
     return render_template("quiz.html", questions=questions)
+
+@app.route("/quiza")
+def quiza():
+    questions = [
+        {
+            "id": 1,
+            "question_img": "images/quiz_nakami/qa1.png",
+            "label_img": "images/quiz_nakami/qa101.png",
+            "choices": ["選択肢A", "選択肢B", "選択肢C", "選択肢D"],
+            "answer": 0,
+            "explanation": "これはテスト用の解説です。"
+        }
+    ]
+    return render_template("quiza.html", questions=questions)
 
 @app.route("/manual")
 def manual():

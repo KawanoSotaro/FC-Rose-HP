@@ -10,7 +10,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2列固定だけどフレキシブル */
         justify-content: center;  /* 全体を中央に */
         column-gap: 70px;         /* 横間隔 */
-        row-gap: 90px;            /* 縦間隔 */
+        row-gap: 50px;            /* 縦間隔 */
         margin-top: 400px;
         max-width: 800px;         /* ギャラリー全体の最大幅 */
         margin-left: auto;
@@ -44,15 +44,53 @@
 
     /* キャプション */
     .photo-item figcaption {
-        margin-top: 8px;
+        margin-top: 0px;
         font-size: 30px;                  /* 文字サイズを大きく */
         color: #000;
         font-weight: bold;                 /* 太字 */
     }
+    /* ヘッダー（水色バー） */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 120px;
+        background-color: #ffecfd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid #ccc;
+        z-index: 999;
+        box-sizing: border-box;
+    }
+    .header-img {
+        height: 80px;          /* ヘッダー内での高さを指定 */
+        width: auto;           /* 横幅は自動調整 */
+        display: block;
+        margin: 0 auto;        /* 中央寄せ */
+    }
+
+
+    /* ヘッダーでコンテンツが隠れないように余白調整 */
+    body > *:not(.header) {
+        margin-top: 150px;
+    }
     </style>
 </head>
 <body>
-    <h1 style="text-align:center; color: hotpink;">ロゼ写真集</h1>
+    <!-- ヘッダー -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='images/rosesyasinkan.png') }}" 
+            alt="ヘッダー画像" 
+            class="header-img">
+    </div>
+    <!-- ここに追加画像 -->
+    <div class="middle-image">
+        <img src="{{ url_for('static', filename='images/syasinkanrule.png') }}" 
+            alt="追加画像" 
+            style="width:100%; max-width:600px; display:block; margin:200px auto -50px auto;">
+    </div>
 
     <div class="photo-gallery">
         <figure class="photo-item">

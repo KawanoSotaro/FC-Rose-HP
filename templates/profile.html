@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
-    <title>プロフィールブック</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <!-- CDN版 PDF.js を読み込む -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
@@ -15,7 +14,7 @@
         }
         #pdf-container {
             width: 100%;
-            max-width: 800px; /* 好きな最大幅に調整可能 */
+            max-width: 850px; /* 好きな最大幅に調整可能 */
             margin: 0 auto;
         }
         canvas {
@@ -27,7 +26,6 @@
     </style>
 </head>
 <body>
-    <h1 style="text-align:center;">プロフィールブック</h1>
     <div id="pdf-container"></div>
 
     <script>

@@ -9,70 +9,70 @@
     <style>
         /* 画面全体をFlexで中央寄せ */
         body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 80vh;
-                margin: 0;
-                font-family: sans-serif;
-                background-color: #f5f5f5;
-            }
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #f5f5f5;
+        }
 
-            /* ログインボックス */
-            .login-box {
-                background: white;
-                padding: 40px;        /* 元の値に戻す */
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                text-align: center;
-                width: 260px;         /* 元の値に戻す */
-                height: 200px;       /* 高さを指定 */
-            }
+        /* ログインボックス */
+        .login-box {
+            background: white;
+            padding: 40px;        
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 260px;        
+            height: 200px;       
+        }
 
-            .login-box h2 {
-                margin-bottom: 0px;
-                font-size: 18px;
-            }
+        .login-box h2 {
+            margin-bottom: 0px;
+            font-size: 18px;
+        }
 
-            /* サブ説明文 */
-            .login-box .note {
-                margin-bottom: 20px;
-                font-size: 11px;
-                color: #666;
-            }
+        /* サブ説明文 */
+        .login-box .note {
+            margin-bottom: 20px;
+            font-size: 11px;
+            color: #666;
+        }
 
-            /* パスワード入力欄 */
-            .login-box input[type="password"] {
-                width: 100%;
-                padding: 10px;
-                margin: 0 auto 15px auto;  /* 上下マージンはそのまま、左右中央 */
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                font-size: 16px;   /* 指定通り */
-                display: block;             /* blockにすることでmargin autoが効く */
-                box-sizing: border-box;     /* padding込みで幅を100%にする */
-            }
+        /* パスワード入力欄 */
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 0 auto 15px auto;  
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 18px;   /* 18pxのまま */
+            display: block;             
+            box-sizing: border-box;     
+        }
 
-            .login-box button {
-                width: 100%;
-                padding: 10px;
-                border: none;
-                border-radius: 6px;
-                background: #007bff;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-            }
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-            .login-box button:hover {
-                background: #0056b3;
-            }
+        .login-box button:hover {
+            background: #0056b3;
+        }
 
-            .error-message {
-                margin-top: 10px;
-                color: red;
-                font-size: 16px;
-            }
+        .error-message {
+            margin-top: 10px;
+            color: red;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
