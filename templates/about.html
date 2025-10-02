@@ -12,6 +12,7 @@
             padding: 0;
             line-height: 1.8;
             color: #000;
+            -webkit-font-smoothing: antialiased;
         }
         .page-header {
             color: #000;
@@ -21,7 +22,7 @@
         .content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 20px 60px;
         }
         .intro-image {
             width: 100%;
@@ -33,26 +34,28 @@
             background-color: #ffecfd;
             color: #000;
             font-size: 40px;
+            font-weight: 600;
             padding: 10px 15px;
-            margin: 0 0 15px;
+            margin: 130px 0 15px;
         }
         .section-text {
             font-size: 24px;
             font-weight: lighter;
             margin-bottom: 100px;
         }
+
         /* 戦績テーブル */
         .results-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 40px;
+            margin-bottom: 100px;
             border: 1px solid #ccc;  /* 外枠 */
         }
         .results-table th, .results-table td {
-            border-left: none;   /* 左の線は消す */
-            border-right: none;  /* 右の線は消す */
-            border-top: 1px solid #ccc;              /* 上の線を残す */
-            border-bottom: 1px solid #ccc;           /* 下の線を残す */
+            border-left: none;
+            border-right: none;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
             padding: 12px;
             text-align: left;
             font-size: 20px;
@@ -63,6 +66,219 @@
         }
         .results-table tr:nth-child(even) {
             background-color: #f9f9f9;
+        }
+
+        /* ===== イベント（マリオ風） ===== */
+        .events-wrap {
+            position: relative;
+            margin-top: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* 背景用の擬似要素 */
+        .events-wrap::before {
+            content: "";
+            position: absolute;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            top: 150px;    /* 画像セットの上側 */
+            bottom: -20px; /* ページドットの下側 */
+            left: 0;
+            right: 0;
+            background-color: #D9F9FF; /* 背景色 */
+            z-index: -1;
+            border-radius: 12px;
+        }
+
+        /* ヘッダーの小説明 */
+        .events-intro {
+            font-size: 36px;
+            margin: -30px 0 16px;
+            color: #333;
+        }
+
+        /* 横スクロールコンテナ */
+        .events-carousel {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 0;
+            /* スクロールバー非表示 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE 10+ */
+        }
+
+        /* 各スライド（カード） */
+        .event-card {
+            scroll-snap-align: start;
+            flex: 0 0 98%;
+            max-width: 880px;
+            background: transparent; /* 背景透明 */
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column; /* 日付を上に */
+            padding: 14px;
+            box-sizing: border-box;
+        }
+
+        /* 日付 */
+        .event-date {
+            font-size: 40px;
+            color: #000;
+            margin-bottom: -5px;
+            font-family: 'FUTURA', sans-serif; /* ここでFUTURAを指定 */
+        }
+
+        /* 画像＋右文字のセット */
+        .event-main {
+            display: flex;
+            align-items: flex-start; /* 上揃え */
+            gap: 16px;
+        }
+
+        /* 画像 */
+        .event-image {
+            flex: 0 0 55%;
+        }
+        .event-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* 右文字 */
+        .event-info {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .event-title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 8px;
+        }
+        .event-desc {
+            font-size: 32px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ナビ矢印（左・右） */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            pointer-events: none;
+        }
+        .nav-btn {
+            pointer-events: auto;
+            position: absolute;
+            background: rgba(255,255,255,0.95);
+            border: 1px solid #eee;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+        .nav-btn:active { transform: translateY(-50%) scale(0.98); }
+        .nav-left { left: 6px; }
+        .nav-right { right: 6px; }
+        .nav-btn svg { width: 18px; height: 18px; fill: #333; }
+
+        /* ページドット */
+        .carousel-dots {
+            text-align: center;
+            margin-top: -20px;
+        }
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+        .dot.active { background: #ff69b4; }
+
+        /* レスポンシブ：狭い画面は画像を上に */
+        @media (max-width: 640px) {
+            .event-main {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .event-image {
+                flex: 0 0 auto;
+                max-width: 100%;
+            }
+            .event-image img { border-radius: 8px; }
+        }
+        /* ボタンラッパー */
+        .sort-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* ボタン間の距離 */
+            margin: 20px 0;
+        }
+
+        /* ボタン共通スタイル */
+        .sort-buttons button {
+            background: none;
+            border: none;
+            font-size: 30px;
+            font-weight: bold;
+            padding: 5px 15px;
+            cursor: pointer;
+            color: black; /* 非選択色 */
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        /* 選択中のボタン */
+        .sort-buttons button.active {
+            color: #FF3399; /* 濃いピンク */
+        }
+
+        /* 下線 */
+        .sort-buttons button::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; /* 下線の位置 */
+            left: 0;
+            width: 100%;
+            height: 3px; /* 線の太さ */
+            background-color: transparent; /* デフォルトは透明 */
+            transition: background-color 0.3s;
+        }
+
+        /* 選択中の下線 */
+        .sort-buttons button.active::after {
+            background-color: #FF3399; /* 濃いピンクの線 */
+        }
+        /* あいつ */
+        .fixed-event-image {
+            position: absolute;      /* 絶対配置 */
+            top: 60px;              /* 上からの位置 */
+            left: 800px;              /* 左からの位置 */
+            width: 70px;            /* 幅 */
+            height: auto;            /* 高さは自動 */
+            z-index: 5;              /* カードより上に表示 */
+            pointer-events: auto;   /* クリックを有効に */
+            transition: transform 0.3s cubic-bezier(0.25, 1.5, 0.5, 1); /* 弾むような動き */
+        }
+        .fixed-event-image.jump {
+            transform: translateY(-50px); /* 上に50pxジャンプ */
         }
     </style>
 </head>
@@ -145,12 +361,6 @@
                     <td>2025.2.7</td>
                 </tr>
                 <tr>
-                    <td>一年生大会</td>
-                    <td>2</td>
-                    <td>リーグ戦敗退？</td>
-                    <td>2025.3.24</td>
-                </tr>
-                <tr>
                     <td>SPRING CUP</td>
                     <td>4</td>
                     <td>リーグ戦敗退</td>
@@ -158,7 +368,7 @@
                 </tr>
                 <tr>
                     <td>大会合宿</td>
-                    <td>4</td>
+                    <td>7</td>
                     <td>リーグ戦敗退</td>
                     <td>2025.6.7~8</td>
                 </tr>
@@ -170,7 +380,355 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- ===== ここからイベント（マリオ風横スクロール） ===== -->
         <div class="section-title">イベント</div>
+        <div class="events-wrap">
+            <div class="events-intro">過去のイベントをスワイプして見てみよう！</div>
+            <!-- 固定画像を追加 -->
+            <img src="/static/images/event/eventman.png" alt="固定画像" class="fixed-event-image">
+
+            <div class="sort-buttons">
+                <button id="sort-old"class="active">古い順</button>
+                <button id="sort-new">新しい順</button>
+            </div>
+
+            <!-- ナビ矢印 -->
+            <div class="carousel-nav" aria-hidden="false">
+                <button class="nav-btn nav-left" id="nav-left" aria-label="前のイベントへ">
+                    <!-- 左矢印アイコン -->
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <button class="nav-btn nav-right" id="nav-right" aria-label="次のイベントへ">
+                    <!-- 右矢印アイコン -->
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </button>
+            </div>
+
+            <!-- 横スクロール本体 -->
+            <div class="events-carousel" id="events-carousel" tabindex="0" aria-label="過去イベント">
+            <!-- event1 -->
+            <article class="event-card" data-num="1">
+                <div class="event-date">2024.8.3</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event1.png" alt="PK大会の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">PK大会</div>
+                        <div class="event-desc">賞金100万円がかかったPK大会に参加！</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event2 -->
+            <article class="event-card" data-num="2">
+                <div class="event-date">2024.8.12</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event2.png" alt="花火大会の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">花火大会</div>
+                        <div class="event-desc">井の頭公園でフットサル後に花火。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event3 -->
+            <article class="event-card" data-num="3">
+                <div class="event-date">2024.10.28</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event3.png" alt="ハロウィン大会の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">ハロウィン大会</div>
+                        <div class="event-desc">コスプレをしてフットサル！<br>盛り上がりました。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event4 -->
+            <article class="event-card" data-num="4">
+                <div class="event-date">2024.11.1</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event4.png" alt="フットサル&BBQの写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">フットサル & BBQ</div>
+                        <div class="event-desc">秋加入のメンバーとの顔合わせも兼ねたBBQ！</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event5 -->
+            <article class="event-card" data-num="5">
+                <div class="event-date">2025.1.8</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event5.png" alt="ボーリング大会の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">ボーリング大会</div>
+                        <div class="event-desc">なぜかネオンで実施。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event6 -->
+            <article class="event-card" data-num="6">
+                <div class="event-date">2025.2.10〜11</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event6.png" alt="春合宿の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">春合宿</div>
+                        <div class="event-desc">初の単独合宿。<br>運動会、キャンプファイヤー、肝試しなど！</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event7 -->
+            <article class="event-card" data-num="7">
+                <div class="event-date">2025.3.20</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event7.png" alt="お菓子作り大会の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">第一回お菓子作り大会</div>
+                        <div class="event-desc">記念すべき第一回大会。優勝はガトーショコラ！</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event8 -->
+            <article class="event-card" data-num="8">
+                <div class="event-date">2025.4.26</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event8.png" alt="ドライブの写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">ドライブ</div>
+                        <div class="event-desc">静岡県のドラゴンキャッスルへ！<br>帰りにさわやかも堪能。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event9 -->
+            <article class="event-card" data-num="9">
+                <div class="event-date">2025.5</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event9.png" alt="新歓BBQの写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">新歓BBQ</div>
+                        <div class="event-desc">はじめましてのBBQ！<br>3期が仲間入りしました。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event10 -->
+            <article class="event-card" data-num="10">
+                <div class="event-date">2025.6.29</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event10.png" alt="第二回お菓子作り大会の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">第二回お菓子作り大会</div>
+                        <div class="event-desc">ホットケーキ大量発生！みんなでおいしくいただきました。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event11 -->
+            <article class="event-card" data-num="11">
+                <div class="event-date">2025.8.3</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event11.png" alt="よみうりランドの写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">よみうりランド</div>
+                        <div class="event-desc">班に分かれてアトラクションを乗り回す！<br>夏の思い出。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event12 -->
+            <article class="event-card" data-num="12">
+                <div class="event-date">2025.8.28</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event12.png" alt="ドライブの写真（海辺）" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">ドライブ&BBQ</div>
+                        <div class="event-desc">海辺でBBQ！<br>サッカーも楽しみました。</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- event13 -->
+            <article class="event-card" data-num="13">
+                <div class="event-date">2025.9.6〜7</div>
+                <div class="event-main">
+                    <div class="event-image">
+                        <img data-src="/static/images/event/event13.png" alt="夏合宿の写真" loading="lazy">
+                    </div>
+                    <div class="event-info">
+                        <div class="event-title">夏合宿</div>
+                        <div class="event-desc">運動会、BBQ、肝試し…<br>最高の思い出！</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+            <!-- ページドット（任意） -->
+            <div class="carousel-dots" id="carousel-dots" aria-hidden="true"></div>
+        </div>
+
+        <!-- 沿革 -->
+        <div class="section-title" >沿革</div>
+
     </div>
+
+    <script>
+    (function() {
+        const carousel = document.getElementById('events-carousel');
+        const leftBtn = document.getElementById('nav-left');
+        const rightBtn = document.getElementById('nav-right');
+        const slides = Array.from(carousel.querySelectorAll('.event-card'));
+        const dotsContainer = document.getElementById('carousel-dots');
+
+        // 矢印操作：1ページ分スクロール
+        function scrollByPage(direction = 1) {
+            const containerWidth = carousel.clientWidth;
+            carousel.scrollBy({
+                left: containerWidth * direction,
+                behavior: 'smooth'
+            });
+        }
+        leftBtn.addEventListener('click', () => scrollByPage(-1));
+        rightBtn.addEventListener('click', () => scrollByPage(1));
+
+        // ドット作成
+        slides.forEach((slide, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.dataset.index = i;
+            dot.addEventListener('click', () => {
+                slide.scrollIntoView({behavior: 'smooth', inline: 'start'});
+            });
+            dotsContainer.appendChild(dot);
+        });
+
+        // IntersectionObserver: スライドが50%見えたら画像を読み込む & ドット更新
+        const options = { root: carousel, rootMargin: '0px', threshold: 0.5 };
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const slide = entry.target;
+                const img = slide.querySelector('img[data-src]');
+                if (entry.isIntersecting) {
+                    if (img && img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    const index = Array.from(carousel.querySelectorAll('.event-card')).indexOf(slide);
+                    if (index >= 0) updateDots(index);
+                }
+            });
+        }, options);
+
+        slides.forEach(slide => slideObserver.observe(slide));
+
+        function updateDots(activeIndex) {
+            const dots = dotsContainer.querySelectorAll('.dot');
+            dots.forEach((d, i) => d.classList.toggle('active', i === activeIndex));
+        }
+
+        // キーボード操作
+        carousel.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { e.preventDefault(); scrollByPage(1); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); scrollByPage(-1); }
+        });
+
+        // マウスドラッグ操作
+        let isDown = false, startX = 0, scrollLeft = 0;
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true; carousel.classList.add('active');
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+        carousel.addEventListener('mouseleave', () => { isDown = false; carousel.classList.remove('active'); });
+        carousel.addEventListener('mouseup', () => { isDown = false; carousel.classList.remove('active'); });
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 1;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        // 初期スライド画像読み込み
+        (function preloadFirstSlide() {
+            const firstImg = slides[0].querySelector('img[data-src]');
+            if (firstImg && firstImg.dataset.src) {
+                firstImg.src = firstImg.dataset.src;
+                firstImg.removeAttribute('data-src');
+            }
+        })();
+
+    })();
+
+    // DOM読み込み後にソートボタンを設定
+    document.addEventListener("DOMContentLoaded", () => {
+        const carousel = document.getElementById("events-carousel");
+        const btnOld = document.getElementById("sort-old");
+        const btnNew = document.getElementById("sort-new");
+
+        function sortCards(oldestFirst = true) {
+            const cards = Array.from(carousel.querySelectorAll(".event-card"));
+            cards.sort((a, b) => {
+                const numA = parseInt(a.dataset.num, 10);
+                const numB = parseInt(b.dataset.num, 10);
+                return oldestFirst ? numA - numB : numB - numA;
+            });
+
+            cards.forEach(card => carousel.appendChild(card));
+            carousel.scrollTo({ left: 0, behavior: "smooth" });
+        }
+
+        function setActiveButton(selectedBtn) {
+            [btnOld, btnNew].forEach(btn => btn.classList.remove('active'));
+            selectedBtn.classList.add('active');
+        }
+
+        btnOld.addEventListener("click", () => {
+            sortCards(true);
+            setActiveButton(btnOld);
+        });
+
+        btnNew.addEventListener("click", () => {
+            sortCards(false);
+            setActiveButton(btnNew);
+        });
+    });
+    // 固定画像のジャンプアニメーション
+    const img = document.querySelector('.fixed-event-image');
+
+    img.addEventListener('click', () => {
+        img.classList.add('jump');  // クラスを付けてジャンプ
+        setTimeout(() => {
+            img.classList.remove('jump'); // 元の位置に戻す
+        }, 300); // CSSの transition と同じ時間
+    });
+    </script>
 </body>
 </html>
