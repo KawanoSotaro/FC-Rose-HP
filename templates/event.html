@@ -83,7 +83,8 @@ h1 {
     flex: 1;
     font-size: 32px;
     line-height: 1.6;
-    min-width: 0;
+    min-width: 250px; /* 極端に潰れないようにする */
+    word-break: break-word; /* 長いURLも折り返す */
 }
 
 .event-text small {
@@ -91,6 +92,18 @@ h1 {
     margin-top: 10px;
     font-size: 20px;
     color: gray;
+}
+
+.event-text a {
+    color: #0066cc;   /* 青っぽいリンク色 */
+    text-decoration: underline; /* 下線付き */
+}
+
+.event-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
 }
 
 .event-image {
@@ -169,16 +182,18 @@ h1 {
         <div class="event-container">
             <div class="event-text">
                 <p>
-                    ◆BBQ🍖<br>
-                    日時：10/12 14:00~17:00<br>
-                    参加費：3500円程度<br>
-                    参加方法：ノートにリアクション<br>
-                    参加フォーム：なし
+                    <span class="event-title">◆明大祭</span><br>
+                    日時：11/1(土)〜11/3(月)<br>
+                    参加費：なし<br>
+                    参加方法：参加フォームへの記入<br>
+                    参加フォーム：<br>
+                    <a href="https://forms.gle/qaaiozJFZWURDhWm6" target="_blank">
+                    https://forms.gle/qaaiozJFZWURDhWm6</a>
                 </p>
-                <small>参加に「フォーム入力」が必要な場合はここにフォームが表示されます。</small>
+                <!--<small>参加に「フォーム入力」が必要な場合はここにフォームが表示されます。</small>-->
             </div>
             <div class="event-image">
-                <img src="{{ url_for('static', filename='images/IMG_8670.jpeg') }}" alt="イベント画像">
+                <img src="{{ url_for('static', filename='images/IMG_8773.jpeg') }}" alt="イベント画像">
             </div>
         </div>
     </div>
@@ -186,7 +201,7 @@ h1 {
         <hr class="divider">
         <div class="commingsoon-container">
             <div class="commingsoon-text">
-                <p>◆？？？</p>
+                <p><span class="event-title">◆？？？</span></p>
                 <big>COMMING SOON...</big>
             </div>
             <div class="commingsoon-image">

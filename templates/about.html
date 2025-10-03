@@ -280,6 +280,182 @@
         .fixed-event-image.jump {
             transform: translateY(-50px); /* 上に50pxジャンプ */
         }
+
+        /* 沿革 */
+        :root{
+            --pink: #ff69b4;
+            --divider: #ececec;
+            --text: #222;
+            --muted: #555;
+            --radius: 8px;
+        }
+
+        /* リセット的 */
+        *{box-sizing: border-box;}
+        body{
+            font-family: "Helvetica Neue", "Noto Sans JP", Arial, sans-serif;
+            margin: 0;
+            padding: 32px;
+            color: var(--text);
+            background: #fff;
+        }
+
+        h1{
+            text-align:center;
+            margin: 0 0 28px 0;
+            font-size: 24px;
+        }
+
+        .timeline{
+            max-width: 980px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        /* 各項目（グリッドで3列: dot / date / main） */
+        .timeline-item{
+            display: grid;
+            grid-template-columns: 40px 160px 1fr;
+            gap: 16px;
+            align-items: center; /* 縦中央揃え（dot, date, header） */
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--divider); /* 薄い横線で区切り */
+        }
+
+        /* ドット（ピンクの円） */
+        .dot{
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--pink);
+            display: inline-block;
+            margin-left: 13px; /* 左の余白を少し調整して表示位置を整える */
+            flex-shrink: 0;
+        }
+
+        /* 日付 */
+        .date{
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        /* メイン領域（タイトル行 + 折りたたみ領域） */
+        .main{
+            min-width: 0; /* テキスト折返し対策 */
+        }
+
+        .main-header{
+            display: flex;
+            align-items: center; /* タイトルとボタンを縦中央で揃える */
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .title{
+            font-size: 16px;
+            font-weight: 700;
+            text-align: left; /* ここは左揃えで完璧に揃う */
+            margin: 0;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        /* トグルボタン */
+        .toggle-btn{
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            background: transparent;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .15s ease, transform .15s ease;
+        }
+
+        .toggle-btn:focus{ outline: 2px solid rgba(0,0,0,0.08); outline-offset: 2px; }
+        .toggle-btn:hover{ background: rgba(0,0,0,0.03); }
+
+        /* 矢印（SVG） */
+        .toggle-icon{
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            transition: transform .23s cubic-bezier(.2,.9,.2,1);
+            transform-origin: 50% 50%;
+            color: var(--muted);
+            fill: currentColor;
+        }
+
+        /* 開いた時に回転 */
+        .timeline-item.open .toggle-icon{
+            transform: rotate(90deg);
+        }
+
+        /* 折りたたみ領域（高さをアニメーション） */
+        .details{
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height .36s ease, opacity .26s ease;
+        }
+
+        .timeline-item.open .details{
+            opacity: 1;
+        }
+
+        /* 内部コンテンツ：テキストと画像を横並び（右に画像） */
+        .details-inner{
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-top: 12px;
+        }
+
+        .detail-text{
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .detail-text p{ margin: 0; }
+
+        .detail-img{
+            width: 120px; /* 少し小さめ */
+            height: auto;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        /* 画像が無い場合はテキストを左いっぱいに */
+        .details-inner.no-img{ display: block; }
+
+        /* スマホ等の狭い画面では縦並び */
+        @media (max-width: 720px){
+            .timeline-item{
+            grid-template-columns: 36px 120px 1fr;
+            padding: 14px;
+            }
+            .details-inner{
+            flex-direction: column;
+            }
+            .detail-img{
+            width: 100%;
+            max-width: 320px;
+            margin-top: 8px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -368,7 +544,7 @@
                 </tr>
                 <tr>
                     <td>大会合宿</td>
-                    <td>7</td>
+                    <td>4</td>
                     <td>リーグ戦敗退</td>
                     <td>2025.6.7~8</td>
                 </tr>
@@ -594,8 +770,271 @@
             <div class="carousel-dots" id="carousel-dots" aria-hidden="true"></div>
         </div>
 
-        <!-- 沿革 -->
-        <div class="section-title" >沿革</div>
+        <div class="section-title">沿革</div>
+        <div class="timeline">
+        <!-- 2024.3.4 -->
+        <div class="timeline-item" id="item-1">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.3.4</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">初回活動</h3>
+                <!-- Has detail or image => show toggle -->
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-1" title="詳細を表示">
+                <!-- triangle SVG ▶ -->
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-1" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>フットサルパーク吉祥寺、参加人数9人</p>
+                </div>
+                <img src="static/images/enkaku/15.png" alt="初回活動の写真" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2024.4.1 -->
+        <div class="timeline-item" id="item-2">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.4.1</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">向陽中を初めて利用する</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-2" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-2" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>楽しい思い出だった。</p>
+                </div>
+                <img src="static/images/enkaku/16.png" alt="向陽中での活動" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2024.4~5 -->
+        <div class="timeline-item" id="item-3">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.4~5</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">新歓実施</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-3" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-3" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>延べ参加人数約130人</p>
+                </div>
+                <img src="static/images/enkaku/17.png" alt="新歓の様子" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2024.6.25 （画像・詳細なし -> ボタン非表示） -->
+        <div class="timeline-item" id="item-4">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.6.25</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">明治大学仮公認</h3>
+                <!-- ボタンは表示しない（詳細・画像が無い） -->
+            </div>
+            <!-- details ブロック自体を省く（余白が残らない） -->
+            </div>
+        </div>
+
+        <!-- 2024.8.22 -->
+        <div class="timeline-item" id="item-5">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.8.22</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">初の対外試合</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-5" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-5" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>Summer Cup</p>
+                </div>
+                <img src="static/images/enkaku/18.png" alt="対外試合" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2024.12.10~11 -->
+        <div class="timeline-item" id="item-6">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.12.10~11</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">初合宿</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-6" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-6" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>（詳細なし）</p>
+                </div>
+                <img src="static/images/enkaku/19.png" alt="初合宿" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2024.12 (ユニフォーム制作：画像なし、詳細あり) -->
+        <div class="timeline-item" id="item-7">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2024.12</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">ユニフォーム制作</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-7" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-7" aria-hidden="true">
+                <div class="details-inner no-img">
+                <div class="detail-text">
+                    <p>制作者：稲葉遼、初回購入者数：28人</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2025.2.10~11 -->
+        <div class="timeline-item" id="item-8">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2025.2.10~11</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">初の単独春合宿</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-8" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-8" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>一泊二日</p>
+                </div>
+                <img src="static/images/enkaku/20.png" alt="春合宿" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2025.4 -->
+        <div class="timeline-item" id="item-9">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2025.4</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">新歓</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-9" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-9" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>延べ参加人数約600人、３日間のブース出店、ポスター掲示、ビラ配り、インスタライブ出演、新歓練習：計９日間</p>
+                    <p style="margin-top:.6em">日程を学部別にすることで抽選なしの新歓練習を実現。抽選により応募者数382名の中から103人が加入。</p>
+                </div>
+                <img src="static/images/enkaku/21.png" alt="2025新歓" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2025.5 -->
+        <div class="timeline-item" id="item-10">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2025.5</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">幹部交代</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-10" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-10" aria-hidden="true">
+                <div class="details-inner no-img">
+                <div class="detail-text">
+                    <p>幹部が2人から5人へ</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 2025.8.7 -->
+        <div class="timeline-item" id="item-11">
+            <div class="dot" aria-hidden="true"></div>
+            <div class="date">2025.8.7</div>
+            <div class="main">
+            <div class="main-header">
+                <h3 class="title">マーチカップ</h3>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="detail-11" title="詳細を表示">
+                <svg class="toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+                </button>
+            </div>
+
+            <div class="details" id="detail-11" aria-hidden="true">
+                <div class="details-inner">
+                <div class="detail-text">
+                    <p>ベスト４（過去最高戦績）</p>
+                </div>
+                <img src="static/images/enkaku/22.png" alt="マーチカップ" class="detail-img">
+                </div>
+            </div>
+            </div>
+        </div>
 
     </div>
 
@@ -728,6 +1167,59 @@
         setTimeout(() => {
             img.classList.remove('jump'); // 元の位置に戻す
         }, 300); // CSSの transition と同じ時間
+    });
+
+    // 全トグルを処理するスクリプト
+    document.addEventListener('DOMContentLoaded', function(){
+        const buttons = Array.from(document.querySelectorAll('.toggle-btn'));
+
+        buttons.forEach(btn => {
+        const detailsId = btn.getAttribute('aria-controls');
+        const details = document.getElementById(detailsId);
+        if(!details) return;
+
+        // 初期 maxHeight を 0 に（念のため）
+        details.style.maxHeight = null;
+        details.setAttribute('aria-hidden','true');
+
+        btn.addEventListener('click', function(){
+            const item = btn.closest('.timeline-item');
+            const isOpen = item.classList.contains('open');
+
+            if(isOpen){
+            // 閉じる
+            item.classList.remove('open');
+            btn.setAttribute('aria-expanded','false');
+            details.setAttribute('aria-hidden','true');
+
+            // アニメーション：高さを滑らかに閉じる
+            details.style.maxHeight = details.scrollHeight + 'px'; // 現在高さをセット
+            // 少し遅らせてから0にすることでトランジション有効化
+            requestAnimationFrame(() => {
+                details.style.maxHeight = '0px';
+            });
+
+            } else {
+            // 開く
+            item.classList.add('open');
+            btn.setAttribute('aria-expanded','true');
+            details.setAttribute('aria-hidden','false');
+
+            // まず maxHeight を内容の高さにセットして開く
+            details.style.maxHeight = details.scrollHeight + 'px';
+
+            // 終わったら maxHeight を 'none' にして中身の変化に対応できるようにする
+            const removeMax = () => {
+                // only remove if it's still open
+                if(item.classList.contains('open')){
+                details.style.maxHeight = 'none';
+                }
+                details.removeEventListener('transitionend', removeMax);
+            };
+            details.addEventListener('transitionend', removeMax);
+            }
+        });
+        });
     });
     </script>
 </body>
