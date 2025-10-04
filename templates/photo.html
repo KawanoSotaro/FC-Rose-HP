@@ -9,7 +9,7 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2列固定だけどフレキシブル */
         justify-content: center;  /* 全体を中央に */
-        column-gap: 70px;         /* 横間隔 */
+        column-gap: 100px;         /* 横間隔 */
         row-gap: 50px;            /* 縦間隔 */
         margin-top: 400px;
         max-width: 800px;         /* ギャラリー全体の最大幅 */
@@ -19,13 +19,12 @@
 
     .photo-item {
         text-align: center;
-        max-width: 370px;  /* 写真の最大幅 */
         margin: 0 auto;    /* 各アイテムも中央寄せ */
     }
 
     .photo-item img {
         width: 100%;
-        height: 250px;
+        height: 270px; /* 写真の高さを270pxに設定 */
         object-fit: cover;
         border-radius: 10px;
         cursor: pointer;
@@ -40,6 +39,7 @@
         margin-top: 8px;
         font-size: 14px;
         color: #555;
+        font-family:'ヒラギノ丸ゴ Pro';
     }
 
     /* キャプション */
@@ -89,76 +89,76 @@
     <div class="middle-image">
         <img src="{{ url_for('static', filename='images/syasinkanrule.png') }}" 
             alt="追加画像" 
-            style="width:100%; max-width:600px; display:block; margin:200px auto -50px auto;">
+            style="width:100%; max-width:700px; display:block; margin:100px auto -50px auto;">
     </div>
 
     <div class="photo-gallery">
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/PZdZ4PPuDSSS4j6p9" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025natugassyuku.jpeg') }}" alt="2025 夏合宿">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025natugassyuku.png') }}" alt="2025 夏合宿">
             </a>
             <figcaption>2025 夏合宿！！</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/WhSFg5QhUDRR5Am67" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025.8drive.jpeg') }}" alt="2025 8月ドライブ">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025.8drive.png') }}" alt="2025 8月ドライブ">
             </a>
             <figcaption>2025 8月ドライブ🚙</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/LBbzu8uXwoa7Ef5Y7" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025yomiran.jpeg') }}" alt="2025 8月よみうりランド">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025yomiran.png') }}" alt="2025 8月よみうりランド">
             </a>
             <figcaption>2025 8月よみラン！！</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/4adtBRvx4JBL2LpG8" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2okasitukuri.jpeg') }}" alt="第2回お菓子作り大会">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2okasitukuri.png') }}" alt="第2回お菓子作り大会">
             </a>
             <figcaption>第2回 お菓子作り大会🍰</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/qhzRWHi6VzXDGxNE6" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025sinkangassyuku.jpeg') }}" alt="2025 新歓合宿">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025sinkangassyuku.png') }}" alt="2025 新歓合宿">
             </a>
             <figcaption>2025 新歓合宿！！</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/tZThviwuTM3og95q8" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025.5BBQ.jpeg') }}" alt="2025 5月BBQ">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025.5BBQ.png') }}" alt="2025 5月BBQ">
             </a>
             <figcaption>2025 5月 BBQ🍖</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/cdCwiymScWWgDY5U9" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/1okasitukuri.jpeg') }}" alt="第1回お菓子作り">
+                <img src="{{ url_for('static', filename='images/syasinsyu/1okasitukuri.png') }}" alt="第1回お菓子作り">
             </a>
             <figcaption>第1回 お菓子作り🍭</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/FM4jQToikzzk2xpX8" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025harugassyuku.jpeg') }}" alt="2025 春合宿">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025harugassyuku.png') }}" alt="2025 春合宿">
             </a>
             <figcaption>2025 春合宿！！</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/yWXPnGxijAxc6sQ59" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025bowling.JPG') }}" alt="2025 ボウリング">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2025bowling.png') }}" alt="2025 ボウリング">
             </a>
             <figcaption>2025 ボウリング🎳</figcaption>
         </figure>
 
         <figure class="photo-item">
             <a href="https://photos.app.goo.gl/TuYxHm8pghsDV27C6" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2024.12taikaigassyuku.jpeg') }}" alt="2024 12月大会合宿">
+                <img src="{{ url_for('static', filename='images/syasinsyu/2024.12taikaigassyuku.png') }}" alt="2024 12月大会合宿">
             </a>
             <figcaption>2024 12月 大会合宿⚽️</figcaption>
         </figure>

@@ -33,32 +33,49 @@
         }
         .header-title {
             font-size: 60px;
-            color: rgb(255, 105, 180);
+            color: hotpink;
             font-family: 'Arial', 'Helvetica', sans-serif;
             font-weight: bold;
             text-align: center;
         }
 
-        /* ハンバーガーメニュー */
-        .menu-btn {
-            position: absolute;
-            top: 50%;
-            right: 20px;
+        /* ハンバーガーメニューのバー */
+        .hamburger-btn {
+            position: fixed;
+            top: 2.5%;
+            right: 50px;
             width: 80px;
             height: 50px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transform: translateY(-50%);
+            transform: none; 
             cursor: pointer;
-            z-index: 1001;
+            z-index: 9999;
         }
-        .menu-btn span {
+
+        .hamburger-btn span {
             display: block;
-            height: 6px;
+            height: 5px;
+            width: 100%;
             background: #333;
             border-radius: 2px;
+            transition: all 0.3s ease;
         }
+
+        /* バーが×になるアニメーション */
+        .hamburger-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(15.8px, 15.8px);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(15.8px, -15.8px);
+        }
+
 
         /* メニューの枠 */
         .menu {
@@ -75,9 +92,9 @@
             justify-content: center;
             padding-top: 70px; /* 下げたい分だけ調整 */
             opacity: 0;
-            pointer-events: none;
             transition: opacity 0.5s ease;
-            z-index: 1000;
+            pointer-events: none;
+            z-index: 9990;
         }
         .menu.active {
             opacity: 1;
@@ -102,22 +119,13 @@
         .sns-links {
             display: flex;          /* 横並びにする */
             gap: 60px;              /* 画像の間隔を調整 */
-            margin-top: 100px;       /* 上のメニューと間隔を取る */
+            margin-top: 10px;       /* 上のメニューと間隔を取る */
             justify-content: center; /* 中央寄せ */
         }
 
         .sns-links img {
             width: 80px;   /* SNSアイコンの大きさ調整 */
             height: auto;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 80px;
-            color: rgb(0, 0, 0);
-            cursor: pointer;
         }
 
         /* スライドショー（既存） */
@@ -177,6 +185,7 @@
         overflow: hidden; /* はみ出しを隠す */
         }
     
+
         .calendar-wrapper {
         display: flex;
         width: 200%; /* 画像2枚分 */
@@ -256,56 +265,55 @@
             <img src="/static/images/icon.jpeg" alt="アイコン" class="header-icon">
             <span class="header-title">FC.Rose</span>
         </div>
-        <div class="menu-btn" id="menu-btn">
+        <div class="hamburger-btn" id="hamburger-btn">
             <span></span>
             <span></span>
             <span></span>
         </div>
-    </div>
-
+    
         <!-- メニュー本体 -->
-    <nav class="menu" id="menu">
-        <div class="close-btn">✕</div>
+        <nav class="menu" id="menu">
 
-        <a href="/about">
-            <img src="{{ url_for('static', filename='images/menu/menu1.png') }}" alt="サークルの説明" class="menu-size">
-        </a>
-
-        <a href="https://forms.gle/YrcrBgRyub1ftP4L8" target="_blank">
-            <img src="{{ url_for('static', filename='images/menu/menu2.png') }}" alt="サークルへの提案フォーム" class="menu-size">
-        </a>
-
-        <a href="/profile">
-            <img src="{{ url_for('static', filename='images/menu/menu3.png') }}" alt="メンバー情報" class="menu-size">
-        </a>
-
-        <a href="/event">
-            <img src="{{ url_for('static', filename='images/menu/menu4.png') }}" alt="イベント参加フォーム" class="menu-size">
-        </a>
-
-        <a href="/photo">
-            <img src="{{ url_for('static', filename='images/menu/menu5.png') }}" alt="ロゼ写真集" class="menu-size">
-        </a>
-
-        <a href="/quiz_home">
-            <img src="{{ url_for('static', filename='images/menu/menu6.png') }}" alt="ロゼ検定" class="menu-size">
-        </a>
-
-        <a href="{{ url_for('manual') }}">
-            <img src="{{ url_for('static', filename='images/menu/menu7.png') }}" alt="幹部マニュアル" class="menu-size">
-        </a>
-
-        <!-- SNSアイコンだけ横並びにする -->
-        <div class="sns-links">
-            <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">
-                <img src="{{ url_for('static', filename='images/menu/menuinsta.png') }}" alt="Instagram">
+            <a href="/about">
+                <img src="{{ url_for('static', filename='images/menu/menu1.png') }}" alt="サークルの説明" class="menu-size">
             </a>
 
-            <a href="https://x.com/meiji_fcrose?s=21&t=NC3LiqFG9kRu21tU4KBOkQ" target="_blank">
-                <img src="{{ url_for('static', filename='images/menu/menux.png') }}" alt="Twitter">
+            <a href="https://forms.gle/YrcrBgRyub1ftP4L8" target="_blank">
+                <img src="{{ url_for('static', filename='images/menu/menu2.png') }}" alt="サークルへの提案フォーム" class="menu-size">
             </a>
-        </div>
-    </nav>
+
+            <a href="/profile">
+                <img src="{{ url_for('static', filename='images/menu/menu3.png') }}" alt="メンバー情報" class="menu-size">
+            </a>
+
+            <a href="/event">
+                <img src="{{ url_for('static', filename='images/menu/menu4.png') }}" alt="イベント参加フォーム" class="menu-size">
+            </a>
+
+            <a href="/photo">
+                <img src="{{ url_for('static', filename='images/menu/menu5.png') }}" alt="ロゼ写真集" class="menu-size">
+            </a>
+
+            <a href="/quiz_home">
+                <img src="{{ url_for('static', filename='images/menu/menu6.png') }}" alt="ロゼ検定" class="menu-size">
+            </a>
+
+            <a href="{{ url_for('manual') }}">
+                <img src="{{ url_for('static', filename='images/menu/menu7.png') }}" alt="幹部マニュアル" class="menu-size">
+            </a>
+
+            <!-- SNSアイコンだけ横並びにする -->
+            <div class="sns-links">
+                <a href="https://www.instagram.com/meiji_fc.rose?igsh=MTl0Njk3cGJtdXVhZw%3D%3D&utm_source=qr" target="_blank">
+                    <img src="{{ url_for('static', filename='images/menu/menuinsta.png') }}" alt="Instagram">
+                </a>
+
+                <a href="https://x.com/meiji_fcrose?s=21&t=NC3LiqFG9kRu21tU4KBOkQ" target="_blank">
+                    <img src="{{ url_for('static', filename='images/menu/menux.png') }}" alt="Twitter">
+                </a>
+            </div>
+        </nav>
+    </div>
 
     <!-- スライドショー部分（既存4枚、自動） -->
     <div class="slideshow-container">
@@ -353,11 +361,12 @@
     <!-- スクリプト（最後まで） -->
     <script>
     // -------------------- メニュー開閉 --------------------
-    document.getElementById("menu-btn").addEventListener("click", function() {
-        document.getElementById("menu").classList.toggle("active");
-    });
-    document.querySelector(".close-btn").addEventListener("click", function() {
-        document.getElementById("menu").classList.remove("active");
+    const menuBtn = document.getElementById("hamburger-btn");
+    const menu = document.getElementById("menu");
+
+    menuBtn.addEventListener("click", () => {
+        menu.classList.toggle("active");
+        menuBtn.classList.toggle("active"); // ハンバーガーの変形
     });
 
     // -------------------- 既存スライドショー（自動4枚） --------------------

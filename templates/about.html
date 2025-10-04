@@ -3,22 +3,34 @@
 <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
+
     <title>FC.Roseについて</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
     <style>
         body {
-            font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.8;
             color: #000;
             -webkit-font-smoothing: antialiased;
         }
+       
+
         .page-header {
             color: #000;
-            font-size: 40px;
-            padding: 20px;
+            line-height: 0;
+            font-size: 50px;
+            font-weight: 600;
+            padding: 30px;
+            border-bottom: 10px solid #FFD7FB; /* ピンクの下線 */
+            margin-bottom: 20px;
+            margin-top: 50px;
+            display: inline-block; /* 幅を文字に合わせる */
         }
+        
         .content {
             max-width: 900px;
             margin: 0 auto;
@@ -38,9 +50,13 @@
             padding: 10px 15px;
             margin: 130px 0 15px;
         }
+        /* 特定のセクションだけ上の空間を縮める */
+        .section-title.special-section {
+            margin-top: 20px; /* 上の空間を50pxに縮める */
+        }
         .section-text {
             font-size: 24px;
-            font-weight: lighter;
+            font-weight: 400;
             margin-bottom: 100px;
         }
 
@@ -58,7 +74,7 @@
             border-bottom: 1px solid #ccc;
             padding: 12px;
             text-align: left;
-            font-size: 20px;
+            font-size: 24px;
         }
         .results-table th {
             background-color: #ffecfd;
@@ -92,8 +108,9 @@
 
         /* ヘッダーの小説明 */
         .events-intro {
-            font-size: 36px;
-            margin: -30px 0 16px;
+            font-size: 24px;
+            font-weight: 600;
+            margin: -30px 0 32px;
             color: #333;
         }
 
@@ -290,16 +307,6 @@
             --radius: 8px;
         }
 
-        /* リセット的 */
-        *{box-sizing: border-box;}
-        body{
-            font-family: "Helvetica Neue", "Noto Sans JP", Arial, sans-serif;
-            margin: 0;
-            padding: 32px;
-            color: var(--text);
-            background: #fff;
-        }
-
         h1{
             text-align:center;
             margin: 0 0 28px 0;
@@ -308,12 +315,11 @@
 
         .timeline{
             position: relative; /* ← これを追加！縦線を配置するために必要 */
-            max-width: 980px;
+            max-width: 900px;
             margin: 0 auto;
-            background: white;
+            background: #f9f9f9;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
         .timeline::before {
             content: "";
@@ -483,14 +489,16 @@
 </head>
 <body>
     <!-- 左上タイトル -->
-    <div class="page-header">サークル紹介</div>
+    <div class="page-header-wrapper">
+        <div class="page-header">サークル紹介</div>
+    </div>
 
     <div class="content">
         <!-- 写真 -->
         <img src="/static/images/huukei1.png" alt="サークルの写真" class="intro-image">
 
         <!-- 名前の由来 -->
-        <div class="section-title">サークル名の由来</div>
+        <div class="section-title special-section">サークル名の由来</div>
         <div class="section-text">
             「Rose」はフランス語で「ピンク」を意味する言葉です。ピンクといえば、どこか親しみやすく、可愛らしいイメージがあります。<br>
             そのイメージのように、初心者の方でも安心して参加でき、誰もが気軽に楽しくボールを蹴れるサークルを目指しています。
@@ -814,7 +822,9 @@
             <div class="details" id="detail-1" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>フットサルパーク吉祥寺、参加人数9人</p>
+                    <p>フットサルパーク吉祥寺で初めての活動を行う。<br>
+                        久しぶりの運動でみんな下手。<br>
+                        参加人数は9人だった。</p>
                 </div>
                 <img src="static/images/enkaku/15.png" alt="初回活動の写真" class="detail-img">
                 </div>
@@ -839,7 +849,8 @@
             <div class="details" id="detail-2" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>楽しい思い出だった。</p>
+                    <p>校舎への入り方がわからない人が続出。<br>
+                        新歓前に大学2年生だけで実施。</p>
                 </div>
                 <img src="static/images/enkaku/16.png" alt="向陽中での活動" class="detail-img">
                 </div>
@@ -864,7 +875,10 @@
             <div class="details" id="detail-3" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>延べ参加人数約130人</p>
+                    <p>6回の新歓練習を実施。<br>
+                        延べ参加人数約130人。<br>
+                        約40人が入サー。全員男！！
+                    </p>
                 </div>
                 <img src="static/images/enkaku/17.png" alt="新歓の様子" class="detail-img">
                 </div>
@@ -902,7 +916,8 @@
             <div class="details" id="detail-5" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>Summer Cup</p>
+                    <p>Summer Cupという大会に出場。<br>
+                        結果は芳しくなかったが、チームワークを高められた。</p>
                 </div>
                 <img src="static/images/enkaku/18.png" alt="対外試合" class="detail-img">
                 </div>
@@ -927,7 +942,8 @@
             <div class="details" id="detail-6" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>（詳細なし）</p>
+                    <p>他サークル合同の大会合宿に参加。<br><br>
+                    他のサークルが疲れて宿に帰っていく中、最後までボールを蹴って遊んでいたのはFC.Roseだった。</p>
                 </div>
                 <img src="static/images/enkaku/19.png" alt="初合宿" class="detail-img">
                 </div>
@@ -952,7 +968,9 @@
             <div class="details" id="detail-7" aria-hidden="true">
                 <div class="details-inner no-img">
                 <div class="detail-text">
-                    <p>制作者：稲葉遼、初回購入者数：28人</p>
+                    <p>連戦を経てさすがにユニフォームが欲しくなる。<br>
+                        初回購入者数28人。<br>
+                    デザインは稲葉遼。</p>
                 </div>
                 </div>
             </div>
@@ -976,7 +994,9 @@
             <div class="details" id="detail-8" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>一泊二日</p>
+                    <p>1泊2日で実施。<br>
+                        運動会、BBQ、キャンプファイヤー、花火、夜レク、肝試し、フットサル大会、体育館スポーツ。<br>
+                    濃すぎる内容に大満足。</p>
                 </div>
                 <img src="static/images/enkaku/20.png" alt="春合宿" class="detail-img">
                 </div>
@@ -1001,8 +1021,10 @@
             <div class="details" id="detail-9" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>延べ参加人数約600人、３日間のブース出店、ポスター掲示、ビラ配り、インスタライブ出演、新歓練習：計９日間</p>
-                    <p style="margin-top:.6em">日程を学部別にすることで抽選なしの新歓練習を実現。抽選により応募者数382名の中から103人が加入。</p>
+                    <p>延べ参加人数約600人。<br>
+                        新歓練習：計９日間<br>
+                        ３日間のブース出店、ポスター掲示、ビラ配り、インスタライブ出演…<br>
+                    抽選により応募者数382名の中から103人が加入。</p>
                 </div>
                 <img src="static/images/enkaku/21.png" alt="2025新歓" class="detail-img">
                 </div>
@@ -1027,7 +1049,8 @@
             <div class="details" id="detail-10" aria-hidden="true">
                 <div class="details-inner no-img">
                 <div class="detail-text">
-                    <p>幹部が2人から5人へ</p>
+                    <p>幹部が2人から5人へ。<br>
+                    小山琉人が代表になる。</p>
                 </div>
                 </div>
             </div>
@@ -1051,7 +1074,9 @@
             <div class="details" id="detail-11" aria-hidden="true">
                 <div class="details-inner">
                 <div class="detail-text">
-                    <p>ベスト４（過去最高戦績）</p>
+                    <p>ベスト４<br>
+                        過去最高戦績！<br>
+                    感動の涙。</p>
                 </div>
                 <img src="static/images/enkaku/22.png" alt="マーチカップ" class="detail-img">
                 </div>
