@@ -307,12 +307,23 @@
         }
 
         .timeline{
+            position: relative; /* ← これを追加！縦線を配置するために必要 */
             max-width: 980px;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            top: 42px; /* 一番上のドットの中心からスタート（微調整OK） */
+            left: 39px; /* ドットの中心位置に合わせる */
+            width: 2px;
+            height: calc(100% - 42px); /* 最後のドットの少し下まで伸ばす */
+            background: var(--pink);
+            z-index: 0;
         }
 
         /* 各項目（グリッドで3列: dot / date / main） */
@@ -324,9 +335,13 @@
             padding: 18px 20px;
             border-bottom: 1px solid var(--divider); /* 薄い横線で区切り */
         }
+        /* 最後の項目だけ、下線（区切り線）を消す */
+        .timeline-item:last-of-type {
+            border-bottom: none;
+        }
 
         /* ドット（ピンクの円） */
-        .dot{
+        .dott{
             width: 14px;
             height: 14px;
             border-radius: 50%;
@@ -334,12 +349,27 @@
             display: inline-block;
             margin-left: 13px; /* 左の余白を少し調整して表示位置を整える */
             flex-shrink: 0;
+            position: relative; /* 擬似要素の基準 */
+            z-index: 1; /* 内円が外円より前に出るように */
+        }
+        /* 外側の円（枠だけ） */
+        .dott::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* 中心を合わせる */
+            width: 20px;   /* 内円より少し大きめ */
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--pink); /* 枠の色と太さ */
+            background: transparent; /* 中は透明 */
         }
 
         /* 日付 */
         .date{
             font-weight: 700;
-            font-size: 14px;
+            font-size: 24px;
             white-space: nowrap;
         }
 
@@ -356,42 +386,34 @@
         }
 
         .title{
-            font-size: 16px;
+            font-size: 24px;
             font-weight: 700;
             text-align: left; /* ここは左揃えで完璧に揃う */
             margin: 0;
             line-height: 1.2;
             word-break: break-word;
-        }
+            margin-left: 30px;
+        }   
 
-        /* トグルボタン */
-        .toggle-btn{
-            -webkit-appearance: none;
-            appearance: none;
+        /* ボタン全体の背景を透明に */
+        .toggle-btn {
+            background: transparent; /* ←ここを追加/修正 */
             border: none;
-            background: transparent;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: background .15s ease, transform .15s ease;
+            padding: 0; /* ボタン内の余白をなくす */
         }
 
-        .toggle-btn:focus{ outline: 2px solid rgba(0,0,0,0.08); outline-offset: 2px; }
-        .toggle-btn:hover{ background: rgba(0,0,0,0.03); }
-
-        /* 矢印（SVG） */
-        .toggle-icon{
-            display: inline-block;
-            width: 14px;
-            height: 14px;
+        /* SVG（三角）のサイズと色 */
+        .toggle-icon {
+            width: 32px;   /* サイズは任意で調整 */
+            height: 32px;
+            color: #222;   /* 三角の色を黒に設定 */
+            fill: currentColor; /* SVG 塗りつぶし */
             transition: transform .23s cubic-bezier(.2,.9,.2,1);
             transform-origin: 50% 50%;
-            color: var(--muted);
-            fill: currentColor;
         }
 
         /* 開いた時に回転 */
@@ -420,16 +442,17 @@
         }
 
         .detail-text{
-            font-size: 14px;
+            font-size: 20px;
             color: var(--muted);
             line-height: 1.6;
             flex: 1;
+            margin-left: 30px; /*ここでタイトルの位置と一致させる */
         }
 
         .detail-text p{ margin: 0; }
 
         .detail-img{
-            width: 120px; /* 少し小さめ */
+            width: 240px; /* 少し小さめ */
             height: auto;
             border-radius: 6px;
             object-fit: cover;
@@ -561,8 +584,8 @@
         <div class="section-title">イベント</div>
         <div class="events-wrap">
             <div class="events-intro">過去のイベントをスワイプして見てみよう！</div>
-            <!-- 固定画像を追加 -->
-            <img src="/static/images/event/eventman.png" alt="固定画像" class="fixed-event-image">
+            <!-- あいつを追加 -->
+            <img src="/static/images/event/eventman.png" alt="あいつ" class="fixed-event-image">
 
             <div class="sort-buttons">
                 <button id="sort-old"class="active">古い順</button>
@@ -774,7 +797,7 @@
         <div class="timeline">
         <!-- 2024.3.4 -->
         <div class="timeline-item" id="item-1">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.3.4</div>
             <div class="main">
             <div class="main-header">
@@ -801,7 +824,7 @@
 
         <!-- 2024.4.1 -->
         <div class="timeline-item" id="item-2">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.4.1</div>
             <div class="main">
             <div class="main-header">
@@ -826,7 +849,7 @@
 
         <!-- 2024.4~5 -->
         <div class="timeline-item" id="item-3">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.4~5</div>
             <div class="main">
             <div class="main-header">
@@ -851,7 +874,7 @@
 
         <!-- 2024.6.25 （画像・詳細なし -> ボタン非表示） -->
         <div class="timeline-item" id="item-4">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.6.25</div>
             <div class="main">
             <div class="main-header">
@@ -864,7 +887,7 @@
 
         <!-- 2024.8.22 -->
         <div class="timeline-item" id="item-5">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.8.22</div>
             <div class="main">
             <div class="main-header">
@@ -889,7 +912,7 @@
 
         <!-- 2024.12.10~11 -->
         <div class="timeline-item" id="item-6">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.12.10~11</div>
             <div class="main">
             <div class="main-header">
@@ -914,7 +937,7 @@
 
         <!-- 2024.12 (ユニフォーム制作：画像なし、詳細あり) -->
         <div class="timeline-item" id="item-7">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2024.12</div>
             <div class="main">
             <div class="main-header">
@@ -938,7 +961,7 @@
 
         <!-- 2025.2.10~11 -->
         <div class="timeline-item" id="item-8">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2025.2.10~11</div>
             <div class="main">
             <div class="main-header">
@@ -963,7 +986,7 @@
 
         <!-- 2025.4 -->
         <div class="timeline-item" id="item-9">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2025.4</div>
             <div class="main">
             <div class="main-header">
@@ -989,7 +1012,7 @@
 
         <!-- 2025.5 -->
         <div class="timeline-item" id="item-10">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2025.5</div>
             <div class="main">
             <div class="main-header">
@@ -1013,7 +1036,7 @@
 
         <!-- 2025.8.7 -->
         <div class="timeline-item" id="item-11">
-            <div class="dot" aria-hidden="true"></div>
+            <div class="dott" aria-hidden="true"></div>
             <div class="date">2025.8.7</div>
             <div class="main">
             <div class="main-header">
@@ -1170,55 +1193,66 @@
     });
 
     // 全トグルを処理するスクリプト
-    document.addEventListener('DOMContentLoaded', function(){
+    document.addEventListener('DOMContentLoaded', function() {
         const buttons = Array.from(document.querySelectorAll('.toggle-btn'));
 
         buttons.forEach(btn => {
-        const detailsId = btn.getAttribute('aria-controls');
-        const details = document.getElementById(detailsId);
-        if(!details) return;
+            const detailsId = btn.getAttribute('aria-controls');
+            const details = document.getElementById(detailsId);
+            if (!details) return;
 
-        // 初期 maxHeight を 0 に（念のため）
-        details.style.maxHeight = null;
-        details.setAttribute('aria-hidden','true');
+            // 初期 maxHeight を 0 に（念のため）
+            details.style.maxHeight = null;
+            details.setAttribute('aria-hidden', 'true');
 
-        btn.addEventListener('click', function(){
-            const item = btn.closest('.timeline-item');
-            const isOpen = item.classList.contains('open');
+            // 共通の開閉関数
+            const toggleDetails = () => {
+                const item = btn.closest('.timeline-item');
+                const isOpen = item.classList.contains('open');
 
-            if(isOpen){
-            // 閉じる
-            item.classList.remove('open');
-            btn.setAttribute('aria-expanded','false');
-            details.setAttribute('aria-hidden','true');
+                if (isOpen) {
+                    // 閉じる
+                    item.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                    details.setAttribute('aria-hidden', 'true');
 
-            // アニメーション：高さを滑らかに閉じる
-            details.style.maxHeight = details.scrollHeight + 'px'; // 現在高さをセット
-            // 少し遅らせてから0にすることでトランジション有効化
-            requestAnimationFrame(() => {
-                details.style.maxHeight = '0px';
+                    details.style.maxHeight = details.scrollHeight + 'px';
+                    requestAnimationFrame(() => {
+                        details.style.maxHeight = '0px';
+                    });
+
+                } else {
+                    // 開く
+                    item.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                    details.setAttribute('aria-hidden', 'false');
+
+                    details.style.maxHeight = details.scrollHeight + 'px';
+
+                    const removeMax = () => {
+                        if (item.classList.contains('open')) {
+                            details.style.maxHeight = 'none';
+                        }
+                        details.removeEventListener('transitionend', removeMax);
+                    };
+                    details.addEventListener('transitionend', removeMax);
+                }
+            };
+
+            // ボタン自体のクリック
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation(); // 親の header には伝えない
+                toggleDetails();
             });
 
-            } else {
-            // 開く
-            item.classList.add('open');
-            btn.setAttribute('aria-expanded','true');
-            details.setAttribute('aria-hidden','false');
-
-            // まず maxHeight を内容の高さにセットして開く
-            details.style.maxHeight = details.scrollHeight + 'px';
-
-            // 終わったら maxHeight を 'none' にして中身の変化に対応できるようにする
-            const removeMax = () => {
-                // only remove if it's still open
-                if(item.classList.contains('open')){
-                details.style.maxHeight = 'none';
-                }
-                details.removeEventListener('transitionend', removeMax);
-            };
-            details.addEventListener('transitionend', removeMax);
+            // タイトル行全体をクリック対象に
+            const header = btn.closest('.main-header');
+            if (header) {
+                header.addEventListener('click', toggleDetails);
             }
-        });
+
+            // 展開した詳細部分もクリックで閉じられるようにする
+            details.addEventListener('click', toggleDetails);
         });
     });
     </script>
