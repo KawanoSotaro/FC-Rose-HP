@@ -33,7 +33,7 @@
         }
         .header-title {
             font-size: 60px;
-            color: hotpink;
+            color: #ff69b4;
             font-family: 'Arial', 'Helvetica', sans-serif;
             font-weight: bold;
             text-align: center;
@@ -90,7 +90,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 70px; /* 下げたい分だけ調整 */
+            padding-top: 50px; /* 下げたい分だけ調整 */
             opacity: 0;
             transition: opacity 0.5s ease;
             pointer-events: none;
@@ -119,7 +119,7 @@
         .sns-links {
             display: flex;          /* 横並びにする */
             gap: 60px;              /* 画像の間隔を調整 */
-            margin-top: 10px;       /* 上のメニューと間隔を取る */
+            margin-top: 80px;       /* 上のメニューと間隔を取る */
             justify-content: center; /* 中央寄せ */
         }
 
@@ -256,6 +256,46 @@
             font-weight: 400;  /* 太字→通常の細さ */
             font-family: 'Arial', 'Helvetica', sans-serif;
         }
+
+        /* フッターセクション */
+        .footer-section {
+            background-color: #ffecfd;
+            text-align: center;
+            padding: 40px 20px; /* 上下余白調整 */
+            margin-top: 100px; /* カレンダーとの距離を広げる */
+            transform: translateY(50px); /* フッター全体を下にずらす */
+        }
+
+        .footer-section .footer-icon {
+            width: 300px; /* 適宜調整 */
+            height: auto;
+            margin-bottom: 40px;
+        }
+
+        .footer-section .footer-sitemap {
+            display: block;
+            color: #000;
+            font-size: 30px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 70px;
+            text-decoration: none;
+        }
+
+        .footer-section .footer-sitemap:hover {
+            text-decoration: underline;
+        }
+
+        .footer-section .footer-note {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .footer-section .footer-copy {
+            color: #333;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -352,8 +392,8 @@
     <!-- カレンダー -->
     <div class="calendar-container">
     <div class="calendar-wrapper" id="calendarWrapper">
-        <img src="{{ url_for('static', filename='images/calendar20259.png') }}" alt="Calendar 1">
-        <img src="{{ url_for('static', filename='images/calendar202510.png') }}" alt="Calendar 2">
+        <img src="{{ url_for('static', filename='images/calendar202510.png') }}" alt="Calendar 1">
+        <img src="{{ url_for('static', filename='images/calendar202511.png') }}" alt="Calendar 2">
     </div>
     <div class="dots" id="calendarDots"></div>
     </div>
@@ -611,10 +651,11 @@
     })();
     </script>
 
-    <!-- 他ページリンク -->
-    <p style="text-align:center;"><a href="/profile">メンバー情報を見る（PDF）</a></p>
-    <p style="text-align:center;"><a href="/entry">イベント参加フォーム</a></p>
-    <p style="text-align:center;"><a href="/about">FC.Roseの紹介を見る</a></p>
-    <p style="text-align:center;"><a href="{{ url_for('photo') }}">ロゼ写真集</a></p>
-</body>
+    <!-- フッター部分 -->
+    <div class="footer-section">
+        <img src="{{ url_for('static', filename='images/roseicon.png') }}" alt="Rose Icon" class="footer-icon">
+        <a href="/map" class="footer-sitemap">|サイトマップ|</a>
+        <p class="footer-note">本サイトのURLを、本サークルとは関係のない第三者へ<br>無断で共有・配布することを禁じます。</p>
+        <p class="footer-copy">©️FC.Rose</p>
+    </div>
 </html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サイトマップ - FC.Rose</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0 25px; /* 全体の横幅 */
+    }
+    
+
+    /* ページヘッダー */
+    .page-header {
+        color: #000;
+        line-height: 1.1;
+        font-size: 24px;
+        font-weight: 600;
+        padding: 0px 0;
+        border-bottom: 4px solid #FFD7FB;
+        margin-bottom: 50px;
+        margin-top: 20px;
+        display: inline-block;
+    }
+
+    .sitemap-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .sitemap-title {
+        flex: 0 0 180px; /* タイトル固定幅 */
+        font-size: 14px;
+        font-weight: 600;
+        margin-right: 0px; /* タイトルと説明の間の空き */
+        z-index: 1;
+    }
+
+    .sitemap-title a {
+        color: #0066cc;
+        text-decoration: underline; /* 下線ありでリンク感を出す */
+        transition: color 0.2s;
+        z-index: 1;
+        background-color: #f9f9f9; /* 白背景（半透明可） */
+        display: inline;       /* 文字幅に合わせる */
+    }
+
+    .sitemap-desc {
+        flex: none;
+        line-height: 1;
+        font-size: 12px;
+        z-index: 2;
+        display: inline;                        /* 文字幅にぴったり */
+        background-color: #f9f9f9; /* 白背景（半透明可） */
+        }
+
+    /* 詰める（おすすめ） */
+    .sitemap-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0px; /* ← ここを変更 */
+        gap: -10px;
+    }
+
+    /* 線の見た目（説明列に合わせる） */
+    hr {
+        border: none;
+        border-top: 1px solid #ccc;
+        margin-top: 2px;           
+        margin-bottom: 10px; /* 線と上のテキストの距離 */
+        margin-left: 180px;        /* タイトル幅に合わせる */
+        width: calc(100% - 180px); /* 説明幅に合わせる */
+        position: relative;
+        top: -2px;                 /* さらに微調整したければここを増減 */
+    }
+
+    /* スマホではフル幅に戻す */
+    @media (max-width:600px) {
+        .sitemap-item { flex-direction: column; margin-bottom: 12px; }  /*文字と線の間を広げる*/
+        hr { margin-left: 0; width: 100%; top: 0; margin-top: 8px; }
+        .sitemap-title {
+            margin-bottom: -155px; /* タイトルと説明の間の空き */
+        }
+    }
+    /* あいつ */
+    .fixed-event-image {
+        position: absolute;      /* 絶対配置 */
+        top: 90px;              /* 上からの位置 */
+        left: 330px;              /* 左からの位置 */
+        width: 40px;            /* 幅 */
+        height: auto;            /* 高さは自動 */
+        z-index: 5;              /* カードより上に表示 */
+        pointer-events: auto;   /* クリックを有効に */
+        transition: transform 0.3s cubic-bezier(0.25, 1.5, 0.5, 1); /* 弾むような動き */
+    }
+    .fixed-event-image.jump {
+        transform: translateY(-50px); /* 上に50pxジャンプ */
+    }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">サイトマップ</div>
+<!-- あいつを追加 -->
+<img src="/static/images/event/eventman.png" alt="あいつ" class="fixed-event-image">
+
+<div class="sitemap-container">
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="/">ホーム</a></div>
+        <div class="sitemap-desc">このHPのトップページです。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="/about">サークルの説明</a></div>
+        <div class="sitemap-desc">過去の大会戦績・イベントなど、さまざまなサークル情報が掲載されています。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="https://forms.gle/YrcrBgRyub1ftP4L8" target="_blank">サークルへの提案フォーム</a></div>
+        <div class="sitemap-desc">サークルへ意見を出すことができます。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="/profile">メンバー紹介</a></div>
+        <div class="sitemap-desc">メンバーのプロフィールブックが掲載されています。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="/event">イベント参加フォーム</a></div>
+        <div class="sitemap-desc">現在開催予定のイベントの確認、申し込みができます。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="/photo">ロゼ写真館</a></div>
+        <div class="sitemap-desc">今まで撮影された写真が閲覧できます。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="/quiz_home">ロゼ検定</a></div>
+        <div class="sitemap-desc">ロゼに関するクイズに挑戦できます。</div>
+    </div>
+    <hr>
+    <div class="sitemap-item">
+        <div class="sitemap-title"><a href="{{ url_for('manual') }}">幹部マニュアル</a></div>
+        <div class="sitemap-desc">運営について詳しく知ることができます。</div>
+    </div>
+</div>
+<script>
+    // あいつをクリックしたときにジャンプアニメーションを実行
+    document.querySelector('.fixed-event-image').addEventListener('click', function() {
+        this.classList.add('jump');
+        setTimeout(() => {
+            this.classList.remove('jump');
+        }, 300); // アニメーション時間に合わせて削除
+    });
+</script>
+
+</body>
+</html>
