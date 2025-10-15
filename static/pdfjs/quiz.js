@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       answer:3
     },
     { id:"q8", question_img:"quiz_nakami/q8.png",
-      choices:[ {text:"１０人"}, {text:"６人"}, {text:"２５人"}, {text:"６０人"} ],
+      choices:[ {text:"９人"}, {text:"６人"}, {text:"２５人"}, {text:"６０人"} ],
       answer:0
     },
     { id:"q9", question_img:"quiz_nakami/q9.png",
