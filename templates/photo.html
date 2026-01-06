@@ -5,51 +5,15 @@
     <title>ロゼ写真集</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-    .photo-gallery {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2列固定だけどフレキシブル */
-        justify-content: center;  /* 全体を中央に */
-        column-gap: 100px;         /* 横間隔 */
-        row-gap: 50px;            /* 縦間隔 */
-        margin-top: 400px;
-        max-width: 800px;         /* ギャラリー全体の最大幅 */
-        margin-left: auto;
-        margin-right: auto;
+        /* 全体設定 */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'ヒラギノ丸ゴ Pro', sans-serif;
+        background-color: #fffafb; /* ほんのり温かい白 */
     }
 
-    .photo-item {
-        text-align: center;
-        margin: 0 auto;    /* 各アイテムも中央寄せ */
-    }
-
-    .photo-item img {
-        width: 100%;
-        height: 270px; /* 写真の高さを270pxに設定 */
-        object-fit: cover;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: transform 0.3s;
-    }
-
-    .photo-item img:hover {
-        transform: scale(1.05);
-    }
-
-    .photo-item figcaption {
-        margin-top: 8px;
-        font-size: 14px;
-        color: #555;
-        font-family:'ヒラギノ丸ゴ Pro';
-    }
-
-    /* キャプション */
-    .photo-item figcaption {
-        margin-top: 0px;
-        font-size: 30px;                  /* 文字サイズを大きく */
-        color: #000;
-        font-weight: bold;                 /* 太字 */
-    }
-    /* ヘッダー（水色バー） */
+    /* ヘッダー周り（継承） */
     .header {
         position: fixed;
         top: 0;
@@ -62,20 +26,144 @@
         justify-content: center;
         border-bottom: 1px solid #ccc;
         z-index: 999;
-        box-sizing: border-box;
     }
-    .header-img {
-        height: 80px;          /* ヘッダー内での高さを指定 */
-        width: auto;           /* 横幅は自動調整 */
-        display: block;
-        margin: 0 auto;        /* 中央寄せ */
-    }
+    .header-img { height: 80px; }
 
-
-    /* ヘッダーでコンテンツが隠れないように余白調整 */
     body > *:not(.header) {
         margin-top: 150px;
     }
+
+    /* タイムラインの土台 */
+    .timeline {
+        position: relative;
+        max-width: 950px;
+        margin: 100px auto;
+        padding: 30px 0;
+    }
+
+    /* 真ん中の縦線 */
+    .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        background: #eec9d2; /* 柔らかいピンクブラウン */
+        transform: translateX(-50%);
+    }
+
+    /* 各アイテムの並び */
+    .timeline-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 0px; /* 写真の縦の間隔調整 */
+        position: relative;
+    }
+
+    /* 右側配置の場合は中身を反転 */
+    .timeline-item.right {
+        flex-direction: row-reverse;
+    }
+
+    /* 写真・テキストボックスの幅 */
+    .photo-box, .text-box {
+        width: 50%;
+    }
+
+    /* ポラロイド風写真の設定 */
+    .photo-box img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+        background-color: transparent;
+        padding: 0;
+        box-shadow: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    /* 傾き調整 */
+    .left .photo-box img { transform: rotate(-5deg); }
+    .right .photo-box img { transform: rotate(5deg); }
+
+    .photo-box img:hover {
+        transform: rotate(0deg) scale(1.05);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    /* テキストボックスの設定 */
+    .text-box {
+    width: 45%;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    /* デフォルト（線の右側にある時）は左寄せ */
+    align-items: flex-start; 
+    text-align: left;
+    }
+
+    /* 線の左側に文字が来る場合（.right）の調整 */
+    .right .text-box {
+        /* 線の左側に文字がある時は、中身をすべて「右寄せ」にする */
+        align-items: flex-end;
+        text-align: right;
+    }
+    .date {
+        font-size: 32px;
+        color: #5c3a3a;
+        margin: 0 0 0 0;
+    }
+
+    .title {
+        font-size: 50px;
+        color: #5c3a3a;
+        margin: 0;
+        display: inline-block;
+        border-bottom: 3px solid #ffecfd; /* タイトルの下線 */
+    }
+
+    /* 矢印（三角形）の作成 */
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    /* 左側アイテムの矢印（右を向く） */
+    .right::after {
+        border-width: 10px 0 10px 15px;
+        border-color: transparent transparent transparent #eec9d2;
+        margin-left: -2px; /* 線に重なるように調整 */
+    }
+
+    /* 右側アイテムの矢印（左を向く） */
+    .left::after {
+        border-width: 10px 15px 10px 0;
+        border-color: transparent #eec9d2 transparent transparent;
+        margin-left: -13px; /* 線に重なるように調整 */
+    }
+
+    /* レスポンシブ対応（画面が狭い時用） */
+    @media (max-width: 768px) {
+        .timeline::before { left: 20px; }
+        .timeline-item, .timeline-item.right {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            padding-left: 50px;
+        }
+        .photo-box, .text-box { width: 90%; }
+        .timeline-item::after { display: none; }
+    }
+
     </style>
 </head>
 <body>
@@ -92,76 +180,128 @@
             style="width:100%; max-width:700px; display:block; margin:100px auto -50px auto;">
     </div>
 
-    <div class="photo-gallery">
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/PZdZ4PPuDSSS4j6p9" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025natugassyuku.png') }}" alt="2025 夏合宿">
-            </a>
-            <figcaption>2025 夏合宿！！</figcaption>
-        </figure>
+    <div class="timeline">
+        
+        <div class="timeline-item left">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/PZdZ4PPuDSSS4j6p9" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu10.png') }}" alt="2025 夏合宿">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.09</p>
+                <h3 class="title">夏合宿！！</h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/WhSFg5QhUDRR5Am67" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025.8drive.png') }}" alt="2025 8月ドライブ">
-            </a>
-            <figcaption>2025 8月ドライブ🚙</figcaption>
-        </figure>
+        <div class="timeline-item right">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/WhSFg5QhUDRR5Am67" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu9.png') }}" alt="2025 8月ドライブ">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.08</p>
+                <h3 class="title">海ドライブ🚙</h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/LBbzu8uXwoa7Ef5Y7" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025yomiran.png') }}" alt="2025 8月よみうりランド">
-            </a>
-            <figcaption>2025 8月よみラン！！</figcaption>
-        </figure>
+        <div class="timeline-item left">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/LBbzu8uXwoa7Ef5Y7" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu8.png') }}" alt="2025 8月よみうりランド">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.08</p>
+                <h3 class="title"><span style="font-size: 40px;">よみうりランド！！</span></h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/4adtBRvx4JBL2LpG8" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2okasitukuri.png') }}" alt="第2回お菓子作り大会">
-            </a>
-            <figcaption>第2回 お菓子作り大会🍰</figcaption>
-        </figure>
+        <div class="timeline-item right">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/4adtBRvx4JBL2LpG8" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu7.png') }}" alt="第2回お菓子作り大会">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.06</p>
+                <h3 class="title"><span style="font-size: 36px;">第2回お菓子作り大会🍰</span></h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/qhzRWHi6VzXDGxNE6" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025sinkangassyuku.png') }}" alt="2025 新歓合宿">
-            </a>
-            <figcaption>2025 新歓合宿！！</figcaption>
-        </figure>
+        <div class="timeline-item left">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/qhzRWHi6VzXDGxNE6" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu6.png') }}" alt="2025 新歓合宿">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.06</p>
+                <h3 class="title">新歓合宿！！</h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/tZThviwuTM3og95q8" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025.5BBQ.png') }}" alt="2025 5月BBQ">
-            </a>
-            <figcaption>2025 5月 BBQ🍖</figcaption>
-        </figure>
+        <div class="timeline-item right">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/tZThviwuTM3og95q8" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu5.png') }}" alt="2025 5月BBQ">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.05</p>
+                <h3 class="title">BBQ🍖</h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/cdCwiymScWWgDY5U9" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/1okasitukuri.png') }}" alt="第1回お菓子作り">
-            </a>
-            <figcaption>第1回 お菓子作り🍭</figcaption>
-        </figure>
+        <div class="timeline-item left">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/cdCwiymScWWgDY5U9" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu4.png') }}" alt="第1回お菓子作り">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.03</p>
+                <h3 class="title"><span style="font-size: 36px;">第1回お菓子作り大会🍭</span></h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/FM4jQToikzzk2xpX8" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025harugassyuku.png') }}" alt="2025 春合宿">
-            </a>
-            <figcaption>2025 春合宿！！</figcaption>
-        </figure>
+        <div class="timeline-item right">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/FM4jQToikzzk2xpX8" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu3.png') }}" alt="2025 春合宿">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.02</p>
+                <h3 class="title">春合宿2025！</h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/yWXPnGxijAxc6sQ59" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2025bowling.png') }}" alt="2025 ボウリング">
-            </a>
-            <figcaption>2025 ボウリング🎳</figcaption>
-        </figure>
+        <div class="timeline-item left">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/yWXPnGxijAxc6sQ59" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu2.png') }}" alt="2025 ボウリング">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2025.01</p>
+                <h3 class="title"><span style="font-size: 45px;">ボーリング大会🎳</span></h3>
+            </div>
+        </div>
 
-        <figure class="photo-item">
-            <a href="https://photos.app.goo.gl/TuYxHm8pghsDV27C6" target="_blank">
-                <img src="{{ url_for('static', filename='images/syasinsyu/2024.12taikaigassyuku.png') }}" alt="2024 12月大会合宿">
-            </a>
-            <figcaption>2024 12月 大会合宿⚽️</figcaption>
-        </figure>
+        <div class="timeline-item right">
+            <div class="photo-box">
+                <a href="https://photos.app.goo.gl/TuYxHm8pghsDV27C6" target="_blank">
+                    <img src="{{ url_for('static', filename='images/syasinsyu/syasinsyu1.png') }}" alt="2024 12月大会合宿">
+                </a>
+            </div>
+            <div class="text-box">
+                <p class="date">2024.12</p>
+                <h3 class="title">大会合宿⚽️</h3>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
