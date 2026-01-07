@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- 要素参照 ---
   const labelArea = document.getElementById("label-area");
+  const labelImg = document.getElementById("label-img"); // 追加
   const questionArea = document.getElementById("question-area");
+  const questionImg = document.getElementById("question-img"); // 追加
   const choicesArea = document.getElementById("choices-area");
   const overlay = document.getElementById("overlay");
   const resultImg = document.getElementById("result-img");
@@ -86,19 +88,39 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const quizSet = getRandomQuizSet(5);
+  // --- 追加：選ばれた5問の画像を事前に読み込む ---
+  function preloadQuizImages(set) {
+    set.forEach((q, index) => {
+      // 問題画像の読み込み
+      const imgQ = new Image();
+      imgQ.src = `/static/images/${q.question_img}`;
+
+      // ラベル（第〇問）の読み込み
+      const imgL = new Image();
+      imgL.src = `/static/images/quiz_nakami/q${index + 101}.png`;
+
+      // 正解・不正解画像の読み込み
+      const idNum = q.id.replace("q", "");
+      const imgS = new Image();
+      imgS.src = `/static/images/quiz_nakami/seikai${idNum}.png`;
+      const imgH = new Image();
+      imgH.src = `/static/images/quiz_nakami/huseikai${idNum}.png`;
+    });
+  }
+  // 実行！
+  preloadQuizImages(quizSet);
 
   // --- 問題表示 ---
   function showQuestion() {
     const q = quizSet[currentIndex];
 
     // ラベル画像
-    const labelImgNum = currentIndex + 101;
-    labelArea.innerHTML = `<img src="/static/images/quiz_nakami/q${labelImgNum}.png" alt="第${currentIndex+1}問目"
-      onerror="this.src='/static/images/quiz_nakami/default.png'">`;
+    labelImg.src = `/static/images/quiz_nakami/q${currentIndex + 101}.png`;
+    labelImg.style.display = "block"; // 非表示を解除
 
     // 問題画像
-    questionArea.innerHTML = `<img src="/static/images/${q.question_img}" alt="問題"
-      onerror="this.src='/static/images/quiz_nakami/default.png'">`;
+    questionImg.src = `/static/images/${q.question_img}`;
+    questionImg.style.display = "block"; // 非表示を解除
 
     // 選択肢シャッフル
     q.shuffledChoices = shuffleArray(q.choices.map((c,i)=>({...c, originalIndex:i})));

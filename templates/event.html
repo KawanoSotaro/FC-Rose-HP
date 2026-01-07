@@ -102,7 +102,7 @@ h1 {
 .event-title {
     font-size: 40px;
     font-weight: 700;
-    color: #111;
+    color: #447bc2;
     margin-bottom: 8px;
 }
 
@@ -121,6 +121,19 @@ h1 {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
+/* 全体の行間を広げる (日時や参加費の行の間隔が開きます) */
+.event-text p {
+    line-height: 2.2; /* 1.6から2.2程度にアップ */
+    margin: 0;
+}
+
+/* 参加方法のラベルと説明文をひとまとめにするクラス */
+.method-block {
+    display: block;      /* blockに変更することで、上下の余白が確実に効くようになります */
+    line-height: 1.1;
+    margin-top: 15px;    /* 「参加費」との間隔 */
+    margin-bottom: 30px; /* ここがポイント！「参加フォーム：なし」を押し下げます */
+}
 /* COMMING SOON全体のラッパー */
 .commingsoon-wrapper {
     padding: 0 60px; /* 横幅は60pxの余白を維持 */
@@ -185,8 +198,15 @@ h1 {
                     <span class="event-title">◆鎌倉遠足</span><br>
                     日時：1/24(土)9:00~18:00<br>
                     参加費：なし<br>
-                    参加方法：ノートにリアクション<br>
-                    参加フォーム：なし<br>
+                    <span class="method-block">
+                        参加方法：<br>
+                        <span style="font-size: 25px;">
+                        グループLINEの「ノート」の投稿へリアクションする🙂
+                        </span>
+                    </span>
+                    参加フォーム：なし
+                <br>
+                    
                     <!--<a href="https://forms.gle/qaaiozJFZWURDhWm6" target="_blank">
                     https://forms.gle/qaaiozJFZWURDhWm6</a>-->
                 </p>

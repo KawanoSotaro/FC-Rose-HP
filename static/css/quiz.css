@@ -338,3 +338,9 @@ body {
     opacity: 0;
   }
 }
+/* JSで表示される画像を、画面中央に配置する設定 */
+#label-img,
+#question-img {
+    margin-left: auto;  /* 左の余白を自動計算 */
+    margin-right: auto; /* 右の余白を自動計算 → これで真ん中になります！ */
+}
