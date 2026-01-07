@@ -12,6 +12,17 @@
         font-family: 'ヒラギノ丸ゴ Pro', sans-serif;
         background-color: #fffafb; /* ほんのり温かい白 */
     }
+    /* 1. すべての要素の計算方法を「枠内」に収める設定 */
+    * {
+        box-sizing: border-box;
+    }
+
+    /* 2. 画面からはみ出した「横方向」の要素を強制的に隠す設定 */
+    html, body {
+        overflow-x: hidden;
+        position: relative;
+        width: 100%;
+    }
 
     /* ヘッダー周り（継承） */
     .header {
